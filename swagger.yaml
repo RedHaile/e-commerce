@@ -353,7 +353,20 @@ components:
           example: '203'
         products:
           type: array
-          example: 'user@mail.com'
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                example: '102'
+              title:
+                type: string
+                example: 'product1'
+            example:
+              - productId: '102'
+                title: 'product1'
+              - productId: '102'
+                title: 'product2'
         totalPrice:
           type: number
           example: 1024
