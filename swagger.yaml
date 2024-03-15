@@ -13,6 +13,8 @@ tags:
     description: Everything about product
   - name: user
     description: Operations about user
+  - name: order
+    description: Information about order
 paths:
   /products:
     get:
@@ -26,9 +28,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/Product'
 
     post:
       tags:
@@ -54,15 +54,26 @@ paths:
         - product
       summary: get a product
       description: get a product
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          description: id of the product
+          schema:
+            type: string
       responses:
         '200':
           description: get a product successfully
           content:
             application/json:
               schema:
-                type: string
-                items:
-                  $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
     put:
       tags:
@@ -85,6 +96,10 @@ paths:
       responses:
         '200':
           description: the product with that product id is updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
 
     delete:
       tags:
@@ -127,15 +142,26 @@ paths:
         - user
       summary: get a user
       description: get a user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: id of the user
+          schema:
+            type: string
       responses:
         '200':
           description: get a user successfully
           content:
             application/json:
               schema:
-                type: string
-                items:
-                  $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
     put:
       tags:
@@ -158,6 +184,115 @@ paths:
       responses:
         '200':
           description: the user with that user id is updated successfully
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orders:
+    get:
+      tags:
+        - order
+      summary: get all orders
+      description: get all available orders.
+      responses:
+        '200':
+          description: get all orders successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+    post:
+      tags:
+        - order
+      summary: create a new order
+      description: create a new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: create new order successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /orders/{orderId}:
+    get:
+      tags:
+        - order
+      summary: get an order
+      description: get an order
+      parameters:
+        - name: orderId
+          required: true
+          in: path
+          description: id of the order
+          schema:
+            type: string
+      responses:
+        '200':
+          description: get an order successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - order
+      summary: update an order
+      description: update an order by the order id
+      parameters:
+        - name: orderId
+          required: true
+          in: path
+          description: id of the order
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: the user with that user id is updated successfully
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      
+    delete:
+      tags:
+        - order
+      summary: delete the order by the order id
+      description: delete the order by the order id
+      parameters:
+        - name: orderId
+          required: true
+          in: path
+          description: id of the order
+          schema:
+            type: string
+      responses:
+        '204':
+          description: the order with that order id is deleted successfully
 
 components:
   schemas:
@@ -171,7 +306,7 @@ components:
           type: string
           example: 'product1'
         price:
-          type: integer
+          type: number
           example: 1
         description:
           type: string
@@ -206,3 +341,29 @@ components:
         avatar:
           type: string
           example: 'https://fastly.picsum.photos/id/5/640/480.jpg'
+    
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: string
+          example: '304'
+        userId:
+          type: string
+          example: '203'
+        products:
+          type: array
+          example: 'user@mail.com'
+        totalPrice:
+          type: number
+          example: 1024
+        createAt:
+          type: string
+          example: '14/03/2024'
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: error message!
