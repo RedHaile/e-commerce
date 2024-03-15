@@ -1,4 +1,3 @@
-// product router
 import express, { Request, Response } from "express";
 
 type Product = {
@@ -16,39 +15,40 @@ let products: Product[] = [
 
 const router = express.Router();
 
-// query
-// http://localhost:8080/api/v1/products?name=Generic
-// ?offset=0&limit=10
-// search
-// filter
+// Query
 router.get("/", (request: Request, response: Response) => {
-  // query
   const nameQuery = request.query.name as string;
-  console.log(request.query, "query");
   const priceQuery = request.query.price as string;
 
-  products = products.filter((product) =>
-    product.name.toLowerCase().includes(nameQuery.toLowerCase())
-  );
-  // get product with less than priceQuery
-  response.status(200).json(products);
+  let filteredProducts = products;
+
+  // Filtering by name
+  if (nameQuery) {
+    filteredProducts = filteredProducts.filter((product) =>
+      product.name.toLowerCase().includes(nameQuery.toLowerCase())
+    );
+  }
+
+  // Filtering by price (less than or equal)
+  if (priceQuery) {
+    const price = parseFloat(priceQuery);
+    filteredProducts = filteredProducts.filter((product) => product.price <= price);
+  }
+
+  response.status(200).json(filteredProducts);
 });
 
-// base url:"http://localhost:8080/api/v1/products/"
-// router.get("/", (request: Request, response: Response) => {
-//   response.status(200).json(products);
-// });
-
+// Create a new product
 router.post("/", (request: Request, response: Response) => {
-  const newProduct = request.body;
+  const newProduct = request.body as Product;
   products.push(newProduct);
   response.status(201).json(products);
 });
 
-// base url:"http://localhost:8080/api/v1/products/:productId"
+// Delete a product by ID
 router.delete("/:productId", (request: Request, response: Response) => {
   const productId = request.params.productId;
-  products = products.filter((item) => item.id !== productId);
+  products = products.filter((product) => product.id !== productId);
   response.sendStatus(204);
 });
 
