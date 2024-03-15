@@ -1,16 +1,8 @@
 //userRouter
 import express, { Request, Response } from "express";
+import { User } from "../misc/type";
 
 // fake users database
-type User = {
-  id: string;
-  password: string;
-  email: string;
-  fullname: string;
-  role: string;
-  avatar: string;
-};
-
 let users: User[] = [
   {
     id: "1",
