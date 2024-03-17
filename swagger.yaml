@@ -23,12 +23,12 @@ paths:
       summary: get all products
       description: get all available products.
       responses:
-        "200":
+        '200':
           description: get all products successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Product"
+                $ref: '#/components/schemas/Product'
 
     post:
       tags:
@@ -39,14 +39,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Product"
+              $ref: '#/components/schemas/Product'
       responses:
-        "201":
+        '201':
           description: create new product successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Product"
+                $ref: '#/components/schemas/Product'
 
   /products/{productId}:
     get:
@@ -62,18 +62,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: get a product successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Product"
-        "404":
+                $ref: '#/components/schemas/Product'
+        '404':
           description: Product not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
     put:
       tags:
@@ -92,14 +92,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Product"
+              $ref: '#/components/schemas/Product'
       responses:
-        "200":
+        '200':
           description: the product with that product id is updated successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Product"
+                $ref: '#/components/schemas/Product'
 
     delete:
       tags:
@@ -114,7 +114,7 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: the product with that product id is deleted successfully
 
   /users:
@@ -127,14 +127,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
       responses:
-        "201":
+        '201':
           description: create new user successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/User'
 
   /users/{userId}:
     get:
@@ -150,18 +150,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: get a user successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "404":
+                $ref: '#/components/schemas/User'
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
     put:
       tags:
@@ -180,16 +180,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
       responses:
-        "200":
+        '200':
           description: the user with that user id is updated successfully
-        "404":
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
   /orders:
     get:
@@ -198,12 +198,12 @@ paths:
       summary: get all orders
       description: get all available orders.
       responses:
-        "200":
+        '200':
           description: get all orders successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Order"
+                $ref: '#/components/schemas/Order'
 
     post:
       tags:
@@ -214,14 +214,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Order"
+              $ref: '#/components/schemas/Order'
       responses:
-        "201":
+        '201':
           description: create new order successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Order"
+                $ref: '#/components/schemas/Order'
 
   /orders/{orderId}:
     get:
@@ -237,18 +237,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: get an order successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Order"
-        "404":
+                $ref: '#/components/schemas/Order'
+        '404':
           description: Order not found!
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
     put:
       tags:
@@ -267,16 +267,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: '#/components/schemas/User'
       responses:
-        "200":
+        '200':
           description: the user with that user id is updated successfully
-        "404":
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
     delete:
       tags:
@@ -291,7 +291,7 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: the order with that order id is deleted successfully
 
   /categories:
@@ -301,12 +301,12 @@ paths:
       summary: get the list of categories
       description: get the list of categories
       responses:
-        "200":
+        '200':
           description: get the categories list successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Category"
+                $ref: '#/components/schemas/Category'
 
     post:
       tags:
@@ -318,14 +318,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Category"
+              $ref: '#/components/schemas/Category'
       responses:
-        "201":
+        '201':
           description: category created successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Category"
+                $ref: '#/components/schemas/Category'
 
   /categories/{categoryId}:
     get:
@@ -341,18 +341,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: get a categiry successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Category"
-        "404":
+                $ref: '#/components/schemas/Category'
+        '404':
           description: Category not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: '#/components/schemas/Error'
 
     put:
       tags:
@@ -371,14 +371,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Category"
+              $ref: '#/components/schemas/Category'
       responses:
-        "200":
+        '200':
           description: category is updated successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Category"
+                $ref: '#/components/schemas/Category'
 
     delete:
       tags:
@@ -393,7 +393,7 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: the category with category id is deleted successfully
 
 components:
@@ -403,22 +403,22 @@ components:
       properties:
         productId:
           type: string
-          example: "102"
+          example: '102'
         title:
           type: string
-          example: "product1"
+          example: 'product1'
         price:
           type: number
           example: 1
         description:
           type: string
-          example: "this is a product"
+          example: 'this is a product'
         size:
           type: number
-          example: "40"
+          example: '40'
         images:
           type: string
-          example: "https://fastly.picsum.photos/id/5/640/480.jpg"
+          example: 'https://fastly.picsum.photos/id/5/640/480.jpg'
         categoryId:
           type: string
 
@@ -427,54 +427,68 @@ components:
       properties:
         userId:
           type: string
-          example: "203"
+          example: '203'
         email:
           type: string
-          example: "user@mail.com"
+          example: 'user@mail.com'
         password:
           type: string
-          example: "password"
+          example: 'password'
         fullname:
           type: string
-          example: "John Smith"
+          example: 'John Smith'
         role:
           type: string
-          example: "customer"
+          example: 'customer'
         avatar:
           type: string
-          example: "https://fastly.picsum.photos/id/5/640/480.jpg"
+          example: 'https://fastly.picsum.photos/id/5/640/480.jpg'
 
     Category:
       type: object
       properties:
         categoryId:
           type: string
-          example: "104"
+          example: '104'
         name:
           type: string
-          example: "T-shirt"
+          example: 'T-shirt'
         image:
           type: string
-          example: "https://api.lorem.space/image/fashion?w=640&h=480&r=4278"
+          example: 'https://api.lorem.space/image/fashion?w=640&h=480&r=4278'
 
     Order:
       type: object
       properties:
         orderId:
           type: string
-          example: "304"
+          example: '304'
         userId:
           type: string
-          example: "203"
+          example: '203'
         products:
           type: array
-          example: "user@mail.com"
+          example: 'user@mail.com'
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                example: '102'
+              title:
+                type: string
+                example: 'product1'
+            example:
+              - productId: '102'
+                title: 'product1'
+              - productId: '102'
+                title: 'product2'
         totalPrice:
           type: number
           example: 1024
         createAt:
           type: string
-          example: "14/03/2024"
+          example: '14/03/2024'
 
     Error:
       type: object
