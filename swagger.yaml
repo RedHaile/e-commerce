@@ -277,7 +277,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      
+
     delete:
       tags:
         - order
@@ -293,6 +293,108 @@ paths:
       responses:
         '204':
           description: the order with that order id is deleted successfully
+
+  /categories:
+    get:
+      tags:
+        - category
+      summary: get the list of categories
+      description: get the list of categories
+      responses:
+        '200':
+          description: get the categories list successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+    post:
+      tags:
+        - category
+      summary: create a new category
+      description: create a new category
+      requestBody:
+        description: create a new category
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: category created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+  /categories/{categoryId}:
+    get:
+      tags:
+        - category
+      summary: get a category by category id
+      description: get a category by category id
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          description: id of the category
+          schema:
+            type: string
+      responses:
+        '200':
+          description: get a categiry successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - category
+      summary: update a category by the category id
+      description: update a category by the category id
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          description: id of the category
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: category is updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+
+    delete:
+      tags:
+        - category
+      summary: delete the category by the category id
+      description: delete the category by the category id
+      parameters:
+        - name: catgoryId
+          required: true
+          in: path
+          description: id of the category
+          schema:
+            type: string
+      responses:
+        '204':
+          description: the category with category id is deleted successfully
 
 components:
   schemas:
@@ -341,7 +443,20 @@ components:
         avatar:
           type: string
           example: 'https://fastly.picsum.photos/id/5/640/480.jpg'
-    
+
+    Category:
+      type: object
+      properties:
+        categoryId:
+          type: string
+          example: '104'
+        name:
+          type: string
+          example: 'T-shirt'
+        image:
+          type: string
+          example: 'https://api.lorem.space/image/fashion?w=640&h=480&r=4278'
+
     Order:
       type: object
       properties:
@@ -353,6 +468,7 @@ components:
           example: '203'
         products:
           type: array
+          example: 'user@mail.com'
           items:
             type: object
             properties:
