@@ -29,3 +29,9 @@ export type Order = {
   totalPrice: number;
   createAt: string;
 };
+
+export type Category = {
+  id: string;
+  name: string;
+  image: string;
+};
