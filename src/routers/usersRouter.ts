@@ -42,6 +42,22 @@ router.post("/", (request: Request, response: Response) => {
   response.status(201).json(users);
 });
 
+router.put("/:userId", (request: Request, response: Response) => {
+    const userId = request.params.userId;
+    const userData = request.body as User;
+  
+    // Find the index of the user in the array
+    const index = users.findIndex((user) => user.id === userId);
+  
+    if (index !== -1) {
+      // Update the user's information
+      users[index] = { ...users[index], ...userData };
+      response.status(200).json(users[index]);
+    } else {
+      response.status(404).json({ message: "User not found" });
+    }
+  });
+  
 router.delete("/:userId", (request: Request, response: Response) => {
   const userId = request.params.userId;
   users = users.filter((item) => item.id !== userId);
