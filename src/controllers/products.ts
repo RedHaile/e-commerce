@@ -55,7 +55,7 @@ export function getAllProducts(request: Request, response: Response) {
   const priceQuery = request.query.price as string;
 
   products = products.filter((product) =>
-    product.title.toLowerCase().includes(titleQuery.toLowerCase())
+    product.title.toLowerCase().includes(titleQuery?.toLowerCase())
   );
   // get product with less than priceQuery
   response.status(200).json(products);

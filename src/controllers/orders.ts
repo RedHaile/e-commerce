@@ -21,45 +21,64 @@ let orders: Order[] = [
 
 // GET ORDERS
 export async function getAllOrders(_: Request, response: Response) {
-  response.status(200).json(orders)
+  try {
+    response.status(200).json(orders);
+  } catch (error) {
+    response.status(500).json({ error: "Internal server error" });
+  }
 }
 
 // CREATE AN ORDER
 export async function createOrder(request: Request, response: Response) {
-  const newOrder = request.body as Order;
-  orders.push(newOrder);
-  response.status(201).json(orders);
+  try {
+    const newOrder = request.body as Order;
+    orders.push(newOrder);
+    response.status(201).json(orders);
+  } catch (error) {
+    response.status(500).json({ error: "Internal server error" });
+  }
 }
 
 // GET AN ORDER
 export async function getOrder(request: Request, response: Response) {
-  let orderId = request.params.orderId;
-  let result = orders.filter((order) => order.orderId === orderId);
-  response.status(200).json(result);
+  try {
+    let orderId = request.params.orderId;
+    let result = orders.filter((order) => order.orderId === orderId);
+    response.status(200).json(result);
+  } catch (error) {
+    response.status(500).json({ error: "Internal server error" });
+  }
 }
 
 // UPDATE AN ORDER
 export async function updateOrder(request: Request, response: Response) {
-  let orderId = request.params.orderId;
-  let newOrder = request.body as Order;
-  let orderIndex = orders.findIndex((order) => order.orderId === orderId)
-  if (orderIndex !== -1) {
-    orders[orderIndex] = { ...orders[orderIndex], ...newOrder };
-    response.status(200).json(newOrder);
-  } else {
-    response.status(404).json("Order not found!");
+  try {
+    let orderId = request.params.orderId;
+    let newOrder = request.body as Order;
+    let orderIndex = orders.findIndex((order) => order.orderId === orderId);
+    if (orderIndex !== -1) {
+      orders[orderIndex] = { ...orders[orderIndex], ...newOrder };
+      response.status(200).json(newOrder);
+    } else {
+      response.status(404).json("Order not found!");
+    }
+  } catch (error) {
+    response.status(500).json({ error: "Internal server error" });
   }
 }
 
 // DELETE AN ORDER
 export async function deleteOrder(request: Request, response: Response) {
-  let orderId = request.params.orderId;
-  let newOrder = request.body as Order;
-  let orderIndex = orders.findIndex((order) => order.orderId === orderId)
-  if (orderIndex !== -1) {
-    orders[orderIndex] = { ...orders[orderIndex], ...newOrder };
-    response.status(200).json(newOrder);
-  } else {
-    response.status(404).json("Order not found!");
+  try {
+    let orderId = request.params.orderId;
+    let orderIndex = orders.findIndex((order) => order.orderId === orderId)
+    if (orderIndex !== -1) {
+      orders = orders.filter((order) => order.orderId !== orderId);
+      response.sendStatus(204);
+    } else {
+      response.status(404).json("Order not found!");
+    }
+  } catch (error) {
+    response.status(500).json({ error: "Internal server error" });
   }
 }
