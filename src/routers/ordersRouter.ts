@@ -1,63 +1,23 @@
 import express, { Request, Response } from "express";
-import { Order } from "../misc/type";
 
-let orders: Order[] = [
-  { 
-    orderId: "1", 
-    userId: "1", 
-    products: [{id: "1", title: "product1"}, {id: "2", title: "product2"}], 
-    totalPrice: 30, 
-    createAt: "14/03/2024" 
-  },
-  { 
-    orderId: "2", 
-    userId: "2", 
-    products: [{id: "3", title: "product3"}, {id: "4", title: "product4"}], 
-    totalPrice: 40, 
-    createAt: "15/03/2024" 
-  },
-];
+import { getAllOrders, createOrder, getOrder, updateOrder, deleteOrder } from "../controllers/orders";
 
 const router = express.Router();
 
 // BASE: api/v1/orders
 // GET ORDERS
-router.get("/", (request: Request, response: Response) => {
-  response.status(200).json(orders)
-});
+router.get("/", getAllOrders)
 
 // CREATE AN ORDER
-router.post("/", (request: Request, response: Response) => {
-  const newOrder = request.body as Order;
-  orders.push(newOrder);
-  response.status(201).json(orders);
-});
+router.post("/", createOrder);
 
-// GET AN ORDERS
-router.get("/:orderId", (request: Request, response: Response) => {
-  let orderId = request.params.orderId;
-  let result = orders.filter((order) => order.orderId === orderId);
-  response.status(200).json(result);
-});
+// GET AN ORDER
+router.get("/:orderId", getOrder);
 
-// UPDATE AN ORDERS
-router.put("/:orderId", (request: Request, response: Response) => {
-  let orderId = request.params.orderId;
-  let newOrder = request.body as Order;
-  let orderIndex = orders.findIndex((order) => order.orderId === orderId)
-  if (orderIndex !== -1) {
-    orders[orderIndex] = { ...orders[orderIndex], ...newOrder };
-    response.status(200).json(newOrder);
-  } else {
-    response.status(404).json("Order not found!");
-  }
-});
+// UPDATE AN ORDER
+router.put("/:orderId", updateOrder);
 
 // DELETE AN ORDER
-router.delete("/:orderId", (request: Request, response: Response) => {
-  let orderId = request.params.orderId;
-  orders = orders.filter((order) => order.orderId !== orderId);
-  response.sendStatus(204);
-});
+router.delete("/:orderId", deleteOrder);
 
 export default router;
