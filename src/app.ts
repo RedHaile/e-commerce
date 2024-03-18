@@ -1,14 +1,15 @@
 import express, { Request, Response } from "express";
+import dotenv from "dotenv";
 
 import productsRouter from "./routers/productsRouter";
 import usersRouter from "./routers/usersRouter";
 import categoriesRouter from "./routers/categoriesRouter";
 import ordersRouter from "./routers/ordersRouter";
 
-const PORT = 8080;
-
 const app = express();
 app.use(express.json());
+
+dotenv.config({ path: ".env" });
 
 app.get("/", (request: Request, response: Response) => {
   response.status(200).json({ message: "Hello world!" });
@@ -19,6 +20,4 @@ app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/categories", categoriesRouter);
 app.use("/api/v1/orders", ordersRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+export default app;
