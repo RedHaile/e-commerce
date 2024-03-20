@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 
 import ordersService from "../services/orders";
-import Order from "../model/Order";
+import Order, { OrderDocument } from "../model/Order";
 
 // GET ORDERS
 export async function getAllOrders(_: Request, response: Response) {
@@ -26,7 +26,7 @@ export async function getOrder(request: Request, response: Response) {
 
 // UPDATE AN ORDER
 export async function updateOrder(request: Request, response: Response) {
-  const newData = new Order(request.body);
+  const newData = request.body as Partial<OrderDocument>;
   const foundOrder = await ordersService.updateOrder(
     request.params.orderId, newData
   );

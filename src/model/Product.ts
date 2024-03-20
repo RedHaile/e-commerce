@@ -1,5 +1,8 @@
-import mongoose, { Schema } from "mongoose";
-import { CategorySchema } from "./Category";
+import mongoose, { Document, Schema } from "mongoose";
+
+import { Product } from "../misc/type";
+
+export type ProductDocument = Document & Product;
 
 const ProductSchema = new mongoose.Schema({
   title: {
@@ -10,27 +13,23 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     default: 10,
   },
-
-  // refer
-  // way 1: category id
-  // {title, price, categoryId }
+  description: {
+    type: String,
+    default: "This is a product",
+  },
+  size: {
+    type: String,
+    default: "M",
+    enum: ["S", "M", "L"]
+  },
+  iamge: {
+    type: String,
+    default: "https://picsum.photos/seed/picsum/600/400"
+  },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
-  // populate
-
-  //   categoryIds: {
-  //     type: [
-  //       {
-  //         type: Schema.Types.ObjectId,
-  //         ref: "Category",
-  //       },
-  //     ],
-  //   },
-
-  // embed
-  // way 2: category
-  // {title, price, {_id: "59b99db4cfa9a34d",name: "category", "price": 10}}
-  //   category: [CategorySchema],
 });
+
+export default mongoose.model<ProductDocument>("Product", ProductSchema);

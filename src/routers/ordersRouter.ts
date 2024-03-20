@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 
 import { getAllOrders, createOrder, getOrder, updateOrder, deleteOrder } from "../controllers/orders";
 
