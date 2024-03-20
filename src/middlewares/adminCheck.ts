@@ -1,13 +1,26 @@
-// To do: create to check user role.
-// if user is an admin => create category/ product
 import { NextFunction, Request, Response } from "express";
+
+import { User } from "../misc/type";
+import { ForbiddenError } from "../errors/ApiError";
+
+const isAdmin = (user: User) => {
+  if (user.role === "admin") {
+    return true
+  }
+  return false
+}
 
 const adminCheck = (
   request: Request,
   response: Response,
   next: NextFunction
 ) => {
-  console.log("admin check ");
+  const roleAdmin = isAdmin(request.body);
+  if (!roleAdmin) {
+    next(new ForbiddenError("You are not admin!"));
+    return;
+  }
+
   next();
 };
 

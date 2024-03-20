@@ -1,6 +1,7 @@
 import express from "express";
 
 import { getAllProducts, createProduct, getProduct, updateProduct, deleteProduct } from "../controllers/products";
+import adminCheck from "../middlewares/adminCheck";
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const router = express.Router();
 router.get("/", getAllProducts)
 
 // CREATE A PRODUCT
-router.post("/", createProduct);
+router.post("/", adminCheck, createProduct);
 
 // GET A PRODUCT
 router.get("/:productId", getProduct);
