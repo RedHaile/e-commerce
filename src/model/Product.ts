@@ -22,7 +22,7 @@ const ProductSchema = new mongoose.Schema({
     default: "M",
     enum: ["S", "M", "L"]
   },
-  iamge: {
+  image: {
     type: String,
     default: "https://picsum.photos/seed/picsum/600/400"
   },
