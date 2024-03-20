@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 
 import userServices from "../services/users";
+import { User } from "../misc/type";
 
 export async function getAllUsers(_: Request, response: Response) {
   const userList = await userServices.getAllUser();
@@ -11,3 +12,56 @@ export async function getAllUsers(_: Request, response: Response) {
 // get user by id
 // req.params
 // response
+export async function findUserByID(request: Request, response: Response) {
+  try {
+    const userId = request.params.userId;
+    const user = await userServices.findUserByID(userId);
+    if (user) {
+      response.status(200).json(user);
+    } else {
+      response.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    response.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function createUser(request: Request, response: Response) {
+  try {
+    const newUser = request.body as User;
+    const createdUser = await userServices.createUser(newUser);
+    response.status(201).json(createdUser);
+  } catch (error) {
+    
+    response.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function updateUser(request: Request, response: Response) {
+  try {
+    const userId = request.params.userId;
+    const userData = request.body as User;
+    const updatedUser = await userServices.updateUser(userId, userData);
+    if (updatedUser) {
+      response.status(200).json(updatedUser);
+    } else {
+      response.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    response.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function deleteUser(request: Request, response: Response) {
+  try {
+    const userId = request.params.userId;
+    const deletedUser = await userServices.deleteUser(userId);
+    if (deletedUser) {
+      response.sendStatus(204);
+    } else {
+      response.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    response.status(500).json({ message: "Internal server error" });
+  }
+}
