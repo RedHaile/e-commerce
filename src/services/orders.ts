@@ -1,11 +1,20 @@
+import { NotFoundError } from "../errors/ApiError";
 import Order, { OrderDocument } from "../model/Order";
 
 const getAllOrders = async (): Promise<OrderDocument[]> => {
-  return await Order.find();
+  try {
+    return await Order.find();
+  } catch (error) {
+    throw new Error("Failed to fetch orders");
+  }
 };
 
 const createOrder = async (order: OrderDocument): Promise<OrderDocument> => {
-  return await order.save();
+  try {
+    return await order.save();
+  } catch (error) {
+    throw new Error("Failed to create orders");
+  }
 };
 
 const getOrderById = async (id: string): Promise<OrderDocument | undefined> => {
@@ -13,6 +22,7 @@ const getOrderById = async (id: string): Promise<OrderDocument | undefined> => {
   if (foundOrder) {
     return foundOrder;
   }
+  throw new NotFoundError();
 };
 
 const deleteOrderById = async (id: string) => {
@@ -20,13 +30,17 @@ const deleteOrderById = async (id: string) => {
   if (foundOrder) {
     return foundOrder;
   }
+  throw new NotFoundError();
 };
 
 const updateOrder = async (id: string, newInformation: Partial<OrderDocument>) => {
-  const foundOrder = await Order.findByIdAndUpdate(id, newInformation, {
+  const updatedOrder = await Order.findByIdAndUpdate(id, newInformation, {
     new: true,
   });
-  return foundOrder;
+  if (updatedOrder) {
+    return updatedOrder;
+  }
+  throw new NotFoundError();
 };
 
 export default {

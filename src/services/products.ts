@@ -1,11 +1,20 @@
+import { NotFoundError } from "../errors/ApiError";
 import Product, { ProductDocument } from "../model/Product";
 
 const getAllProducts = async (): Promise<ProductDocument[]> => {
-  return await Product.find();
+  try { 
+    return await Product.find(); 
+  } catch (error) {
+    throw new Error("Failed to fetch products");
+  }
 };
 
 const createProduct = async (Product: ProductDocument): Promise<ProductDocument> => {
-  return await Product.save();
+  try {
+    return await Product.save();
+  } catch (error) {
+    throw new Error("Failed to create product");
+  }
 };
 
 const getProductById = async (id: string): Promise<ProductDocument | undefined> => {
@@ -13,6 +22,7 @@ const getProductById = async (id: string): Promise<ProductDocument | undefined> 
   if (foundProduct) {
     return foundProduct;
   }
+  throw new NotFoundError();
 };
 
 const deleteProductById = async (id: string) => {
@@ -20,13 +30,17 @@ const deleteProductById = async (id: string) => {
   if (foundProduct) {
     return foundProduct;
   }
+  throw new NotFoundError();
 };
 
 const updateProduct = async (id: string, newInformation: Partial<ProductDocument>) => {
   const updatedProduct = await Product.findByIdAndUpdate(id, newInformation, {
     new: true,
   });
-  return updatedProduct;
+  if (updatedProduct) {
+    return updatedProduct;
+  }
+  throw new NotFoundError();
 };
 
 export default {
