@@ -10,10 +10,12 @@ export const CategorySchema = new mongoose.Schema({
     require: true,
     unique: true,
   },
-  price: {
-    type: Number,
-    default: 10,
+
+  image: {
+    type: String,
+    require: true,
   },
+
   isValid: {
     type: Boolean,
     default: true,
@@ -21,13 +23,6 @@ export const CategorySchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
-  },
-  productIds: {
-    type: [String],
-  },
-  size: {
-    type: String,
-    enum: ["S", "M", "L"],
   },
 });
 
