@@ -9,24 +9,24 @@ const createOrder = async (order: OrderDocument): Promise<OrderDocument> => {
 };
 
 const getOrderById = async (id: string): Promise<OrderDocument | undefined> => {
-  const foundCategory = await Order.findById(id);
-  if (foundCategory) {
-    return foundCategory;
+  const foundOrder = await Order.findById(id);
+  if (foundOrder) {
+    return foundOrder;
   }
 };
 
 const deleteOrderById = async (id: string) => {
-  const foundCategory = await Order.findByIdAndDelete(id);
-  if (foundCategory) {
-    return foundCategory;
+  const foundOrder = await Order.findByIdAndDelete(id);
+  if (foundOrder) {
+    return foundOrder;
   }
 };
 
 const updateOrder = async (id: string, newInformation: Partial<OrderDocument>) => {
-  const updatedCategory = await Order.findByIdAndUpdate(id, newInformation, {
+  const foundOrder = await Order.findByIdAndUpdate(id, newInformation, {
     new: true,
   });
-  return updatedCategory;
+  return foundOrder;
 };
 
 export default {
