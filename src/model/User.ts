@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 export type UserDocument = Document & User;
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  fullname: {
     type: String,
     required: true,
   },
@@ -18,6 +18,15 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: ["customer", "admin"]
+  },
+  avatar: {
+    type: String,
+    default: "https://picsum.photos/seed/picsum/600/400"
   },
 });
 
