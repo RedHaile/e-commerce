@@ -2,17 +2,11 @@ import Category, { CategoryDocument } from "../model/Category";
 
 const getAllCategories = async (): Promise<CategoryDocument[]> => {
   return await Category.find();
-  // limit
-  // skip
-  // {regex: search query}
 };
 
 const createCategory = async (
   category: CategoryDocument
 ): Promise<CategoryDocument> => {
-  // save
-  // 1. create new category
-  // 2. return that
   return await category.save();
 };
 
@@ -48,4 +42,5 @@ export default {
   createCategory,
   getCategoryById,
   deleteCategoryById,
+  updateCategory,
 };
