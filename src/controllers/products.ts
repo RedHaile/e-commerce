@@ -7,9 +7,22 @@ import { InternalServerError, NotFoundError } from "../errors/ApiError";
 
 
 // GET PRODUCTS
-export async function getAllProducts(_: Request, response: Response) {
-  const Products = await ProductsService.getAllProducts();
-  response.status(200).json(Products);
+export async function getAllProducts(request: Request, response: Response) {
+  const limit = Number(request.query.limit);
+  const offset = Number(request.query.offset);
+  const searchQuery = request.query.searchQuery as string;
+  const minPrice = Number(request.query.minPrice);
+  const maxPrice = Number(request.query.maxPrice);
+
+  const Products = await ProductsService.getAllProducts(
+    limit,
+    offset,
+    searchQuery,
+    minPrice,
+    maxPrice);
+
+  const count = Products.length;
+  response.status(200).json({ totalCount: count, products: Products });
 }
 
 // CREATE A PRODUCT

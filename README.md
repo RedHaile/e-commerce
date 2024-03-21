@@ -48,6 +48,11 @@ The minimum requirements of the project.
 - Add a new product, update info of a product, remove a product
 - Ban a user, unban a user
 
+4. Order
+
+- create order
+- get order by user id
+
 ## Response Format
 
 All API responses should be provided in JSON format. A typical response should include a `status`, `data`, and an optional `message` field. The `status` field should indicate the success or failure of the request.
