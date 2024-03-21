@@ -1,13 +1,22 @@
+import { NotFoundError } from "../errors/ApiError";
 import Category, { CategoryDocument } from "../model/Category";
 
 const getAllCategories = async (): Promise<CategoryDocument[]> => {
-  return await Category.find();
+  try {
+    return await Category.find();
+  } catch (error) {
+    throw new Error("Failed to fetch categories");
+  }
 };
 
 const createCategory = async (
   category: CategoryDocument
 ): Promise<CategoryDocument> => {
-  return await category.save();
+  try {
+    return await category.save();
+  } catch (error) {
+    throw new Error("Failed to create category");
+  }
 };
 
 // To do: handle error
@@ -18,6 +27,7 @@ const getCategoryById = async (
   if (foundCategory) {
     return foundCategory;
   }
+  throw new NotFoundError();
 };
 
 const deleteCategoryById = async (id: string) => {
@@ -25,6 +35,7 @@ const deleteCategoryById = async (id: string) => {
   if (foundCategory) {
     return foundCategory;
   }
+  throw new NotFoundError();
 };
 
 const updateCategory = async (
@@ -34,7 +45,10 @@ const updateCategory = async (
   const updatedCategory = await Category.findByIdAndUpdate(id, newInformation, {
     new: true,
   });
-  return updatedCategory;
+  if (updatedCategory) {
+    return updatedCategory;
+  }
+  throw new NotFoundError();
 };
 
 export default {
