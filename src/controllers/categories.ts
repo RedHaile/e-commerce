@@ -97,7 +97,7 @@ export async function deleteCategoryById(
 ) {
   try {
     const deletedCategory = categoriesService.deleteCategoryById(
-      request.params.id
+      request.params.categoryId
     );
     response.status(200).json(deletedCategory);
   } catch (error) {
@@ -105,7 +105,9 @@ export async function deleteCategoryById(
     if (error instanceof NotFoundError) {
       response
         .status(404)
-        .json({ message: `Cant find category with id ${request.params.id}` });
+        .json({
+          message: `Cant find category with id ${request.params.categoryId}`,
+        });
       return;
     }
     next(new InternalServerError());
