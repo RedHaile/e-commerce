@@ -1,9 +1,30 @@
 import { NotFoundError } from "../errors/ApiError";
 import Product, { ProductDocument } from "../model/Product";
 
-const getAllProducts = async (): Promise<ProductDocument[]> => {
+const getAllProducts = async (
+  limit: number,
+  offset: number,
+  searchQuery: string,
+  minPrice: number,
+  maxPrice: number = 10
+): Promise<ProductDocument[]> => {
   try { 
-    return await Product.find(); 
+    const totalCount = await Product.countDocuments();
+    return await Product.find({
+      title: { $regex: searchQuery },
+      price: { $gte: minPrice, $lte: maxPrice },
+    })
+      // .sort({ title: 1 })
+      .populate({
+        path: "categoryId",
+        select: { name: 1 },
+      })
+      .limit(limit)
+      .skip(offset)
+      .exec();
+
+    // fetch category by id
+    //return Product.find({ categoryId: "65f95cbfd2728827cf3a49f3" });
   } catch (error) {
     throw new Error("Failed to fetch products");
   }
