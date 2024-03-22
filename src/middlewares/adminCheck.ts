@@ -17,7 +17,7 @@ const adminCheck = (
 ) => {
   const roleAdmin = isAdmin(request.body);
   if (!roleAdmin) {
-    next(new ForbiddenError("You are not admin!"));
+    next(new ForbiddenError("You are not the admin!"));
     return;
   }
 

@@ -8,19 +8,15 @@ import { InternalServerError, NotFoundError } from "../errors/ApiError";
 
 // GET PRODUCTS
 export async function getAllProducts(request: Request, response: Response) {
-  const limit = Number(request.query.limit);
-  const offset = Number(request.query.offset);
-  const searchQuery = request.query.searchQuery as string;
-  const minPrice = Number(request.query.minPrice);
-  const maxPrice = Number(request.query.maxPrice);
+  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 } = request.query;
 
   const Products = await ProductsService.getAllProducts(
-    limit,
-    offset,
-    searchQuery,
-    minPrice,
-    maxPrice);
-
+    Number(limit),
+    Number(offset),
+    searchQuery as string,
+    Number(minPrice),
+    Number(maxPrice)
+  );
   const count = Products.length;
   response.status(200).json({ totalCount: count, products: Products });
 }
