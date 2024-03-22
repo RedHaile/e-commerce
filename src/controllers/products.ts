@@ -21,6 +21,22 @@ export async function getAllProducts(request: Request, response: Response) {
   response.status(200).json({ totalCount: count, products: Products });
 }
 
+// GET PRODUCTS BASED ON CATEGORY
+export async function getCategoryProducts(request: Request, response: Response) {
+  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 } = request.query;
+
+  const Products = await ProductsService.getCategoryProducts(
+    request.params.categoryId as string,
+    Number(limit),
+    Number(offset),
+    searchQuery as string,
+    Number(minPrice),
+    Number(maxPrice)
+  );
+  const count = Products.length;
+  response.status(200).json({ totalCount: count, products: Products });
+}
+
 // CREATE A PRODUCT
 export async function createProduct(request: Request, response: Response) {
   const newData = new Product(request.body);

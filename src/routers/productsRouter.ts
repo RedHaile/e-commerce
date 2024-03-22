@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getAllProducts, createProduct, getProduct, updateProduct, deleteProduct } from "../controllers/products";
+import { getAllProducts, createProduct, getProduct, updateProduct, deleteProduct, getCategoryProducts } from "../controllers/products";
 import adminCheck from "../middlewares/adminCheck";
 
 const router = express.Router();
@@ -8,6 +8,9 @@ const router = express.Router();
 // BASE: api/v1/products
 // GET PRODUCTS
 router.get("/", getAllProducts)
+
+// GET PRODUCTS BY CATEGORY
+router.get("/category/:categoryId", getCategoryProducts)
 
 // CREATE A PRODUCT
 router.post("/", adminCheck, createProduct);
