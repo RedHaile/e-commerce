@@ -3,11 +3,11 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "../misc/type";
 import { ForbiddenError } from "../errors/ApiError";
 
-const isAdmin = (user: User) => {
-  if (user.role === "admin") {
-    return true
+const isAdmin = (user: User | undefined): boolean => {
+  if (!user || user.role !== "admin") {
+    return false;
   }
-  return false
+  return true
 }
 
 const adminCheck = (
@@ -15,9 +15,10 @@ const adminCheck = (
   response: Response,
   next: NextFunction
 ) => {
-  const roleAdmin = isAdmin(request.body);
+  const user = request.body as User;
+  const roleAdmin = isAdmin(user);
   if (!roleAdmin) {
-    next(new ForbiddenError("You are not the admin!"));
+    next(new ForbiddenError("Access denied! You are not the admin!"));
     return;
   }
 
