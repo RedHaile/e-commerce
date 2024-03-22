@@ -6,7 +6,7 @@ const getAllProducts = async (
   offset: number,
   searchQuery: string,
   minPrice: number,
-  maxPrice: number = 10
+  maxPrice: number
 ): Promise<ProductDocument[]> => {
   try { 
     const totalCount = await Product.countDocuments();
