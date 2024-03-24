@@ -1,10 +1,10 @@
+import { NotFoundError } from "../errors/ApiError";
 import User, { UserDocument } from "../model/User";
 
 // services: async function
 // talk to database
 // methods: find();
-
-const getAllUser = async (): Promise<UserDocument[]> => {
+const getAllUsers = async (): Promise<UserDocument[]> => {
   // find: methods by mongoose
   try {
   return await User.find();
@@ -13,19 +13,19 @@ const getAllUser = async (): Promise<UserDocument[]> => {
 }
 };
 
-const createUser = async (userData: any): Promise<UserDocument> => {
-try {
-  return await User.create(userData);
-} catch (error) {
-  throw new Error("Failed to create a new user");
-}
+const createUser = async (User: UserDocument): Promise<UserDocument> => {
+  try {
+    return await User.save();
+  } catch (error) {
+    throw new Error("Failed to create user");
+  }
 };
 
-const updateUser = async (userId: string, userData: any): Promise<UserDocument | null> => {
+const updateUser = async (userId: string, userData: Partial<UserDocument>): Promise<UserDocument | null> => {
 try {
   return await User.findByIdAndUpdate(userId, userData, { new: true });
 } catch (error) {
-  throw new Error("Failed to update the user");
+  throw new NotFoundError();
 }
 };
 
@@ -34,7 +34,7 @@ try {
   const deletedUser = await User.findByIdAndDelete(userId);
   return !!deletedUser;
 } catch (error) {
-  throw new Error("Failed to delete the user");
+  throw new NotFoundError();
 }
 };
 
@@ -42,8 +42,8 @@ const findUserByID = async (userId: string): Promise<UserDocument | null> => {
 try {
   return await User.findById(userId);
 } catch (error) {
-  throw new Error("Failed to find the user by ID");
+  throw new NotFoundError();
 }
 };
 
-export default { getAllUser, createUser, updateUser, deleteUser, findUserByID };
+export default { getAllUsers, createUser, updateUser, deleteUser, findUserByID };
