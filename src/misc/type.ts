@@ -13,6 +13,14 @@ export type Product = {
   categoryId: string;
 };
 
+export type CategoryProductsQuery = {
+  limit?: number;
+  offset?: number;
+  searchQuery?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export type User = {
   id: string;
   password: string;
