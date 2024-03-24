@@ -10,19 +10,9 @@ export const CategorySchema = new mongoose.Schema({
     require: true,
     unique: true,
   },
-
   image: {
     type: String,
     require: true,
-  },
-
-  isValid: {
-    type: Boolean,
-    default: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
   },
 });
 

@@ -6,7 +6,11 @@ const Schema = mongoose.Schema;
 export type UserDocument = Document & User;
 
 const UserSchema = new mongoose.Schema({
-  fullname: {
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
     type: String,
     required: true,
   },
@@ -28,6 +32,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "https://picsum.photos/seed/picsum/600/400"
   },
+  orders: [
+    {
+    type: Schema.Types.ObjectId,
+    ref: "Order"
+    },
+  ],
 });
 
 export default mongoose.model<UserDocument>("Users", UserSchema);

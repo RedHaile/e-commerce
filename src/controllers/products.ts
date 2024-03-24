@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 import ProductsService from "../services/products";
 import Product, { ProductDocument } from "../model/Product";
 import { InternalServerError, NotFoundError } from "../errors/ApiError";
-
+import { CategoryProductsQuery } from "../misc/type";
 
 // GET PRODUCTS
 export async function getAllProducts(request: Request, response: Response) {
-  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 } = request.query;
+  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 }: CategoryProductsQuery = request.query;
 
   const Products = await ProductsService.getAllProducts(
     Number(limit),
@@ -23,7 +23,7 @@ export async function getAllProducts(request: Request, response: Response) {
 
 // GET PRODUCTS BASED ON CATEGORY
 export async function getCategoryProducts(request: Request, response: Response) {
-  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 } = request.query;
+  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 }: CategoryProductsQuery = request.query;
 
   const Products = await ProductsService.getCategoryProducts(
     request.params.categoryId as string,
