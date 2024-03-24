@@ -1,15 +1,22 @@
 import express from "express";
 
-import { getAllOrders, createOrder, getOrder, updateOrder, deleteOrder } from "../controllers/orders";
+import {
+  getAllOrders,
+  createOrder,
+  getOrder,
+  updateOrder,
+  deleteOrder,
+} from "../controllers/orders";
+import loggedInCheck from "../middlewares/loggedInCheck";
 
 const router = express.Router();
 
 // BASE: api/v1/orders
 // GET ORDERS
-router.get("/", getAllOrders)
+router.get("/", getAllOrders);
 
 // CREATE AN ORDER
-router.post("/", createOrder);
+router.post("/", loggedInCheck, createOrder);
 
 // GET AN ORDER
 router.get("/:orderId", getOrder);

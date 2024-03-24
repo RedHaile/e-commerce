@@ -35,3 +35,10 @@ export type Category = {
   name: string;
   image: string;
 };
+
+export type OrderProduct = {
+  orderProductId: string;
+  productId: string;
+  orderId: string;
+  quantity: number;
+};
