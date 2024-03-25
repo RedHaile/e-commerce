@@ -1,5 +1,6 @@
 import { NotFoundError } from "../errors/ApiError";
 import Order, { OrderDocument } from "../model/Order";
+import User, { UserDocument } from "../model/User";
 
 const getAllOrders = async (): Promise<OrderDocument[]> => {
   try {
@@ -17,8 +18,9 @@ const createOrder = async (order: OrderDocument): Promise<OrderDocument> => {
   }
 };
 
-const getOrderById = async (userId: string): Promise<OrderDocument[] | undefined> => {
-  const foundOrder = await Order.find({ userId: userId });
+// get orders by userId
+const getOrderByUserId = async (userId: string): Promise<UserDocument | undefined> => {
+  const foundOrder = await User.findById(userId);
   if (foundOrder) {
     return foundOrder;
   }
@@ -46,7 +48,7 @@ const updateOrder = async (id: string, newInformation: Partial<OrderDocument>) =
 export default {
   getAllOrders,
   createOrder,
-  getOrderById,
+  getOrderByUserId,
   deleteOrderById,
   updateOrder,
 };

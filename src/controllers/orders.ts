@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import ordersService from "../services/orders";
 import Order, { OrderDocument } from "../model/Order";
 import { InternalServerError, NotFoundError } from "../errors/ApiError";
+import User from "../model/User";
 
 
 // GET ORDERS
@@ -20,11 +21,14 @@ export async function getAllOrders(_: Request, response: Response, next: NextFun
 export async function createOrder(request: Request, response: Response, next: NextFunction) {
   try {
     const userId = request.params.userId;
-    const products = request.body;
-  
-    const newData = new Order({ userId, products });
+    const { products, totalPrice } = request.body;
+
+    const newData = new Order({ products, totalPrice });
     const newOrder = await ordersService.createOrder(newData);
-    response.status(201).json(newOrder);
+
+    await User.findByIdAndUpdate(userId, { $push: { orders: newOrder } });
+    
+    response.status(201).json({ newOrder });
   } catch (error) {
     next(new InternalServerError());
   }
@@ -33,10 +37,10 @@ export async function createOrder(request: Request, response: Response, next: Ne
 // GET AN ORDER
 export async function getOrder(request: Request, response: Response, next: NextFunction) {
   try {
-    const foundOrder = await ordersService.getOrderById(
+    const foundOrder = await ordersService.getOrderByUserId(
       request.params.userId
     );
-    response.status(200).json({ foundOrder });
+    response.status(200).json(foundOrder?.orders);
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({

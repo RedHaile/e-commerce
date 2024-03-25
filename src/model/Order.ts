@@ -13,7 +13,7 @@ export const OrderSchema = new mongoose.Schema({
   ],
   totalPrice: {
     type: Number,
-    required: true,
+    default: 100
   },
   createdAt: {
     type: Date,

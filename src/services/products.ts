@@ -49,21 +49,6 @@ const getCategoryProducts = async (
       .limit(limit)
       .skip(offset)
       .exec();
-
-    // fetch category by id
-    //return Product.find({ categoryId: "65f95cbfd2728827cf3a49f3" });
-
-  // sort: default by id
-  // sort({ title: -1 })
-
-  // return {}
-  // 2 queries: find()
-  // fetch category by id
-  // return Product.find({ categoryId: "65f95cbfd2728827cf3a49f3" });
-  // return Order.find({userId: "65f95cbfd2728827cf3a49f3"})
-
-  // get all product by categoryId
-  // categoryId from endpoint
   } catch (error) {
     throw new Error("Failed to fetch products");
   }
