@@ -1,5 +1,4 @@
 export type Product = {
-  id: string;
   title: string;
   price: number;
   description: string;
@@ -17,31 +16,27 @@ export type CategoryProductsQuery = {
 }
 
 export type User = {
-  id: string;
+  firstname: string;
+  lastname: string;
   password: string;
   email: string;
-  fullname: string;
   role: string;
   avatar: string;
+  orders?: Order[]
 };
 
 export type Order = {
-  orderId: string;
-  userId: string;
   products: Product[];
   totalPrice: number;
   createAt: string;
 };
 
 export type Category = {
-  id: string;
   name: string;
   image: string;
 };
 
 export type OrderProduct = {
-  orderProductId: string;
   productId: string;
-  orderId: string;
   quantity: number;
 };
