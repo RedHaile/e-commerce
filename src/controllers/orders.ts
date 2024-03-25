@@ -26,7 +26,7 @@ export async function createOrder(request: Request, response: Response, next: Ne
     const newData = new Order({ products, totalPrice });
     const newOrder = await ordersService.createOrder(newData);
 
-    await User.findByIdAndUpdate(userId, { $push: { orders: newOrder._id } });
+    await User.findByIdAndUpdate(userId, { $push: { orders: newOrder } });
     
     response.status(201).json({ newOrder });
   } catch (error) {
