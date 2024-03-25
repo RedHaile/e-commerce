@@ -7,41 +7,53 @@ import { InternalServerError, NotFoundError } from "../errors/ApiError";
 import { CategoryProductsQuery } from "../misc/type";
 
 // GET PRODUCTS
-export async function getAllProducts(request: Request, response: Response) {
-  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 }: CategoryProductsQuery = request.query;
+export async function getAllProducts(request: Request, response: Response, next: NextFunction) {
+  try {
+    const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 }: CategoryProductsQuery = request.query;
 
-  const Products = await ProductsService.getAllProducts(
-    Number(limit),
-    Number(offset),
-    searchQuery as string,
-    Number(minPrice),
-    Number(maxPrice)
-  );
-  const count = Products.length;
-  response.status(200).json({ totalCount: count, products: Products });
+    const Products = await ProductsService.getAllProducts(
+      Number(limit),
+      Number(offset),
+      searchQuery as string,
+      Number(minPrice),
+      Number(maxPrice)
+    );
+    const count = Products.length;
+    response.status(200).json({ totalCount: count, products: Products });
+  } catch (error) {
+    next(new InternalServerError());
+  }
 }
 
 // GET PRODUCTS BASED ON CATEGORY
-export async function getCategoryProducts(request: Request, response: Response) {
-  const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 }: CategoryProductsQuery = request.query;
+export async function getCategoryProducts(request: Request, response: Response, next: NextFunction) {
+  try {
+    const { limit = 2e64, offset = 0, searchQuery = "", minPrice = 0, maxPrice = 2e64 }: CategoryProductsQuery = request.query;
 
-  const Products = await ProductsService.getCategoryProducts(
-    request.params.categoryId as string,
-    Number(limit),
-    Number(offset),
-    searchQuery as string,
-    Number(minPrice),
-    Number(maxPrice)
-  );
-  const count = Products.length;
-  response.status(200).json({ totalCount: count, products: Products });
+    const Products = await ProductsService.getCategoryProducts(
+      request.params.categoryId as string,
+      Number(limit),
+      Number(offset),
+      searchQuery as string,
+      Number(minPrice),
+      Number(maxPrice)
+    );
+    const count = Products.length;
+    response.status(200).json({ totalCount: count, products: Products });
+  } catch (error) {
+    next(new InternalServerError());
+  }
 }
 
 // CREATE A PRODUCT
-export async function createProduct(request: Request, response: Response) {
-  const newData = new Product(request.body);
-  const newProduct = await ProductsService.createProduct(newData);
-  response.status(201).json(newProduct);
+export async function createProduct(request: Request, response: Response, next: NextFunction) {
+  try {
+    const newData = new Product(request.body);
+    const newProduct = await ProductsService.createProduct(newData);
+    response.status(201).json(newProduct);
+  } catch (error) {
+    next(new InternalServerError());
+  }
 }
 
 // GET A PRODUCT

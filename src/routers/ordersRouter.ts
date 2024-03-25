@@ -7,7 +7,6 @@ import {
   updateOrder,
   deleteOrder,
 } from "../controllers/orders";
-import loggedInCheck from "../middlewares/loggedInCheck";
 
 const router = express.Router();
 
@@ -15,11 +14,11 @@ const router = express.Router();
 // GET ORDERS
 router.get("/", getAllOrders);
 
-// CREATE AN ORDER
-router.post("/", loggedInCheck, createOrder);
+// A USER CREATES AN ORDER
+router.post("/:userId", createOrder);
 
-// GET AN ORDER
-router.get("/:orderId", getOrder);
+// GET AN ORDER BY USER ID
+router.get("/:userId", getOrder);
 
 // UPDATE AN ORDER
 router.put("/:orderId", updateOrder);

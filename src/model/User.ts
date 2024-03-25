@@ -1,7 +1,6 @@
 import mongoose, { Document, Model } from "mongoose";
 import { User } from "../misc/type";
-
-const Schema = mongoose.Schema;
+import { OrderSchema } from "./Order";
 
 export type UserDocument = Document & User;
 
@@ -34,8 +33,7 @@ const UserSchema = new mongoose.Schema({
   },
   orders: [
     {
-    type: Schema.Types.ObjectId,
-    ref: "Order"
+    type: OrderSchema
     },
   ],
 });

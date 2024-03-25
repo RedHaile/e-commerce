@@ -7,25 +7,36 @@ import { InternalServerError, NotFoundError } from "../errors/ApiError";
 
 
 // GET ORDERS
-export async function getAllOrders(_: Request, response: Response) {
-  const orders = await ordersService.getAllOrders();
-  response.status(200).json(orders);
+export async function getAllOrders(_: Request, response: Response, next: NextFunction) {
+  try {
+    const orders = await ordersService.getAllOrders();
+    response.status(200).json(orders);
+  } catch (error) {
+    next(new InternalServerError());
+  }
 }
 
 // CREATE AN ORDER
-export async function createOrder(request: Request, response: Response) {
-  const newData = new Order(request.body);
-  const newOrder = await ordersService.createOrder(newData);
-  response.status(201).json(newOrder);
+export async function createOrder(request: Request, response: Response, next: NextFunction) {
+  try {
+    const userId = request.params.userId;
+    const products = request.body;
+  
+    const newData = new Order({ userId, products });
+    const newOrder = await ordersService.createOrder(newData);
+    response.status(201).json(newOrder);
+  } catch (error) {
+    next(new InternalServerError());
+  }
 }
 
 // GET AN ORDER
 export async function getOrder(request: Request, response: Response, next: NextFunction) {
   try {
     const foundOrder = await ordersService.getOrderById(
-      request.params.orderId
+      request.params.userId
     );
-    response.status(200).json(foundOrder);
+    response.status(200).json({ foundOrder });
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({

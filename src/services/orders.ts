@@ -17,8 +17,8 @@ const createOrder = async (order: OrderDocument): Promise<OrderDocument> => {
   }
 };
 
-const getOrderById = async (id: string): Promise<OrderDocument | undefined> => {
-  const foundOrder = await Order.findById(id);
+const getOrderById = async (userId: string): Promise<OrderDocument[] | undefined> => {
+  const foundOrder = await Order.find({ userId: userId });
   if (foundOrder) {
     return foundOrder;
   }
