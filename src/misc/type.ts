@@ -1,8 +1,3 @@
-export type ProductOrder = {
-  id: string;
-  title: string;
-};
-
 export type Product = {
   id: string;
   title: string;
@@ -33,7 +28,7 @@ export type User = {
 export type Order = {
   orderId: string;
   userId: string;
-  products: ProductOrder[];
+  products: Product[];
   totalPrice: number;
   createAt: string;
 };
