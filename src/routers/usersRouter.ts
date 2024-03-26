@@ -2,16 +2,16 @@
 
 import express from "express";
 
-import { createUser, deleteUser, getUser, getAllUsers, updateUser } from "../controllers/users";
+import { createUser, deleteUser, loginUser, getAllUsers, updateUser } from "../controllers/users";
 
 const router = express.Router();
 
 router.get("/", getAllUsers);
 
 // LOGIN
-router.get("/:userId", getUser);
-// router.post("/login", loginUser);
+router.post("/login", loginUser);
 
+// REGISTER
 router.post("/", createUser);
 
 router.put("/:userId", updateUser);
