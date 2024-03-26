@@ -24,10 +24,35 @@ export async function createUser(request: Request, response: Response, next: Nex
     next(new InternalServerError());
   }
 }
+// ANDREA
+// export async function createNewUser(request: Request, response: Response) {
+//   try {
+//     const { email, password } = request.body;
+
+//     const saltRounds = 10;
+//     const salt = await bcrypt.genSalt(saltRounds);
+//     // salt: random string + number
+
+//     const hashedPassword = await bcrypt.hash(password, salt);
+//     // password : 123 => "2urofosejf" + "ewuhf" => "2urofosejfewuhf"
+//     // password : 123 => "2urofosejf" + "tugh"
+
+//     // salt round = 1 => 'teyeo'
+//     // salt round = 4 => "83urnfklwidnwj5"
+
+//     console.log(hashedPassword);
+//     const user = new User({ email: email, password: hashedPassword });
+//     const newUser = await userServices.createUser(user);
+//     response.status(201).json({ newUser });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 // get user by id
 // req.params
 // response
+// LOGIN 
 export async function getUser(request: Request, response: Response, next: NextFunction) {
   try {
     const foundUser = await usersService.findUserByID(request.params.userId);
@@ -50,6 +75,65 @@ export async function getUser(request: Request, response: Response, next: NextFu
     next(new InternalServerError());
   }
 }
+// ANDREA
+// export async function loginUser(request: Request, response: Response) {
+//   try {
+//     // check if email
+
+//     // get user email + password
+//     const { email, password } = request.body;
+
+//     // get user => get by email
+//     const userData = await userServices.getUserByEmail(email);
+//     // handler user not found
+//     const hashedPassword = userData.password;
+//     console.log(password, hashedPassword, "compare");
+//     // compare password
+//     // const isMatched = await bcrypt.compare(hashedPassword, password);
+
+//     const isMatched = await bcrypt.compare(password, hashedPassword);
+//     console.log(isMatched, "match");
+
+//     if (!isMatched) {
+//       throw new BadRequest("Password does not match");
+//     }
+//     // create token
+//     const JWT_SECRET = process.env.JWT_SECRET as string;
+//     console.log(JWT_SECRET, "jwt");
+
+//     const token = jwt.sign(
+//       {
+//         // should not provide password
+//         email: userData.email,
+//         _id: userData._id,
+//       },
+//       JWT_SECRET,
+
+//       {
+//         expiresIn: "1h",
+//       }
+//     );
+
+//     // refresh token  => expiresIn: "20d",
+
+//     const refreshToken = jwt.sign(
+//       {
+//         // should not provide password
+//         email: userData.email,
+//         _id: userData._id,
+//         firstName: "something",
+//       },
+//       JWT_SECRET,
+//       {
+//         expiresIn: "20d",
+//       }
+//     );
+//     response.json({ userData, token, refreshToken });
+//     // front-end stores in local storage
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 export async function updateUser(request: Request, response: Response, next: NextFunction) {
   try {

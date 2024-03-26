@@ -46,4 +46,13 @@ try {
 }
 };
 
+// ANDREA
+// const getUserByEmail = async (email: string): Promise<UserDocument> => {
+//   const foundUser = await User.findOne({ email });
+//   if (foundUser) {
+//     return foundUser;
+//   }
+//   throw new NotFoundError("Cant find user with email");
+// };
+
 export default { getAllUsers, createUser, updateUser, deleteUser, findUserByID };
