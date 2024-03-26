@@ -1,8 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import usersService from "../services/users";
-import { InternalServerError, NotFoundError } from "../errors/ApiError";
+import { BadRequest, InternalServerError, NotFoundError } from "../errors/ApiError";
 import User, { UserDocument } from "../model/User";
 
 
@@ -49,91 +51,43 @@ export async function createUser(request: Request, response: Response, next: Nex
 //   }
 // }
 
-// get user by id
-// req.params
-// response
 // LOGIN 
-export async function getUser(request: Request, response: Response, next: NextFunction) {
+export async function loginUser(request: Request, response: Response, next: NextFunction) {
   try {
-    const foundUser = await usersService.findUserByID(request.params.userId);
-    response.status(200).json(foundUser);
-  } catch (error) {
-    if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find order with id ${request.params.orderId}`,
-      });
-      return;
+    const { email, password } = request.body;
+    const userData = await usersService.getUserByEmail(email);
+    const hashedPassword = userData.password;
+
+    const isMatched = await bcrypt.compare(password, hashedPassword);
+
+    if (isMatched === false) {
+      throw new BadRequest("Wrong password, please try again!");
     }
-    
-    if (error instanceof mongoose.Error.CastError) {
-      response.status(404).json({
-        message: `wrong id format`,
-      });
+
+    // CREATE TOKEN
+    const JWT_SECRET = process.env.JWT_SECRET as string;
+
+    const token = jwt.sign(
+      {
+        // DO NOT PROVIDE PASSWORD HERE
+        email: userData.email,
+        _id: userData._id,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+    response.json({ userData, token });
+  } catch (error) {
+    if (error instanceof BadRequest) {
+      response.status(400).json({ error: error.message });
       return;
     }
 
     next(new InternalServerError());
   }
 }
-// ANDREA
-// export async function loginUser(request: Request, response: Response) {
-//   try {
-//     // check if email
-
-//     // get user email + password
-//     const { email, password } = request.body;
-
-//     // get user => get by email
-//     const userData = await userServices.getUserByEmail(email);
-//     // handler user not found
-//     const hashedPassword = userData.password;
-//     console.log(password, hashedPassword, "compare");
-//     // compare password
-//     // const isMatched = await bcrypt.compare(hashedPassword, password);
-
-//     const isMatched = await bcrypt.compare(password, hashedPassword);
-//     console.log(isMatched, "match");
-
-//     if (!isMatched) {
-//       throw new BadRequest("Password does not match");
-//     }
-//     // create token
-//     const JWT_SECRET = process.env.JWT_SECRET as string;
-//     console.log(JWT_SECRET, "jwt");
-
-//     const token = jwt.sign(
-//       {
-//         // should not provide password
-//         email: userData.email,
-//         _id: userData._id,
-//       },
-//       JWT_SECRET,
-
-//       {
-//         expiresIn: "1h",
-//       }
-//     );
-
-//     // refresh token  => expiresIn: "20d",
-
-//     const refreshToken = jwt.sign(
-//       {
-//         // should not provide password
-//         email: userData.email,
-//         _id: userData._id,
-//         firstName: "something",
-//       },
-//       JWT_SECRET,
-//       {
-//         expiresIn: "20d",
-//       }
-//     );
-//     response.json({ userData, token, refreshToken });
-//     // front-end stores in local storage
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 export async function updateUser(request: Request, response: Response, next: NextFunction) {
   try {
@@ -143,7 +97,7 @@ export async function updateUser(request: Request, response: Response, next: Nex
     catch (error) {
       if (error instanceof NotFoundError) {
         response.status(404).json({
-          message: `Cannot find order with id ${request.params.orderId}`,
+          message: `Cannot find order with id ${request.params.userId}`,
         });
         return;
       }
@@ -170,7 +124,7 @@ export async function deleteUser(request: Request, response: Response, next: Nex
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({
-        message: `Cannot find order with id ${request.params.orderId}`,
+        message: `Cannot find order with id ${request.params.userId}`,
       });
       return;
     }
