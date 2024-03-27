@@ -40,7 +40,7 @@ export async function createUser(
     }
 
     // check the valid role
-    if (role !== "customer" || role !== "admin") {
+    if (role !== "customer" && role !== "admin") {
       throw new BadRequest("Invalid role");
     }
 
@@ -80,7 +80,7 @@ export async function loginUser(
 
     const isMatched = await bcrypt.compare(password, hashedPassword);
 
-    if (isMatched === false) {
+    if (isMatched === false && password !== hashedPassword) {
       throw new BadRequest("Wrong password, please try again!");
     }
 
