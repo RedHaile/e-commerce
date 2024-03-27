@@ -25,15 +25,15 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ["customer", "admin"]
+    enum: ["customer", "admin"],
   },
   avatar: {
     type: String,
-    default: "https://picsum.photos/seed/picsum/600/400"
+    default: "https://picsum.photos/seed/picsum/600/400",
   },
   orders: [
     {
-    type: OrderSchema
+      type: OrderSchema,
     },
   ],
 });
