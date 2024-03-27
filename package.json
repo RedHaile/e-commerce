@@ -18,11 +18,15 @@
     "nodemon": "^3.1.0",
     "npm": "^10.5.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "validator": "^13.11.0"
   },
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/server.ts",
     "build": "tsc -p ."
+  },
+  "devDependencies": {
+    "@types/validator": "^13.11.9"
   }
 }
