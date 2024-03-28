@@ -13,7 +13,7 @@ export type CategoryProductsQuery = {
   searchQuery?: string;
   minPrice?: number;
   maxPrice?: number;
-}
+};
 
 export type User = {
   firstname: string;
