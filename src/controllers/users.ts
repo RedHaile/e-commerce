@@ -91,6 +91,7 @@ export async function loginUser(
       {
         // DO NOT PROVIDE PASSWORD HERE
         email: userData.email,
+        role: userData.role,
         _id: userData._id,
       },
       JWT_SECRET,

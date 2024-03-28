@@ -3,6 +3,7 @@
 import express from "express";
 
 import { createUser, deleteUser, loginUser, getAllUsers, updateUser } from "../controllers/users";
+import verifyJWT from "../middlewares/verifyJWT";
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.post("/login", loginUser);
 // REGISTER
 router.post("/", createUser);
 
-router.put("/:userId", updateUser);
+router.put("/:userId", verifyJWT, updateUser);
 
 router.delete("/:userId", deleteUser);
 
