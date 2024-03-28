@@ -5,24 +5,14 @@ import { OrderProduct } from "../misc/type";
 export type OrderProductDocument = Document & OrderProduct;
 
 export const OrderProductSchema = new mongoose.Schema({
-  orderProductId: {
-    type: String,
-    required: true,
-  },
-
   productId: {
     type: Schema.Types.ObjectId,
     ref: "Product",
     required: true,
   },
-  orderId: {
-    type: Schema.Types.ObjectId,
-    ref: "Order",
-    required: true,
-  },
   quantity: {
     type: Number,
-    required: true,
+    default: 1,
   },
 });
 

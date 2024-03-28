@@ -1,23 +1,19 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 import { Order } from "../misc/type";
+import { OrderProductSchema } from "./OrderProduct";
 
 export type OrderDocument = Document & Order;
 
 export const OrderSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-  },
   products: [
     {
-    type: Schema.Types.ObjectId,
-    ref: "Product"
+    type: OrderProductSchema
     },
   ],
   totalPrice: {
     type: Number,
-    required: true,
+    default: 100
   },
   createdAt: {
     type: Date,

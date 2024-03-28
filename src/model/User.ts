@@ -1,7 +1,6 @@
 import mongoose, { Document, Model } from "mongoose";
 import { User } from "../misc/type";
-
-const Schema = mongoose.Schema;
+import { OrderSchema } from "./Order";
 
 export type UserDocument = Document & User;
 
@@ -26,16 +25,15 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ["customer", "admin"]
+    enum: ["customer", "admin"],
   },
   avatar: {
     type: String,
-    default: "https://picsum.photos/seed/picsum/600/400"
+    default: "https://picsum.photos/seed/picsum/600/400",
   },
   orders: [
     {
-    type: Schema.Types.ObjectId,
-    ref: "Order"
+      type: OrderSchema,
     },
   ],
 });
