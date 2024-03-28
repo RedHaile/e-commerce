@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 export type Product = {
   title: string;
   price: number;
@@ -24,6 +26,18 @@ export type User = {
   avatar: string;
   orders?: Order[]
 };
+
+export type DecodedUser = {
+  _id: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+};
+
+export type WithAuthRequest = Request & {
+  decodedUser?: DecodedUser
+}
 
 export type Order = {
   products: Product[];

@@ -7,23 +7,25 @@ import {
   updateOrder,
   deleteOrder,
 } from "../controllers/orders";
+import verifyJWT from "../middlewares/verifyJWT";
+import adminCheck from "../middlewares/adminCheck";
 
 const router = express.Router();
 
 // BASE: api/v1/orders
 // GET ORDERS
-router.get("/", getAllOrders);
+router.get("/", verifyJWT, getAllOrders);
 
 // A USER CREATES AN ORDER
-router.post("/:userId", createOrder);
+router.post("/:userId", verifyJWT, createOrder);
 
 // GET AN ORDER BY USER ID
-router.get("/:userId", getOrder);
+router.get("/:userId", verifyJWT, getOrder);
 
 // UPDATE AN ORDER
-router.put("/:orderId", updateOrder);
+router.put("/:orderId", verifyJWT, updateOrder);
 
 // DELETE AN ORDER
-router.delete("/:orderId", deleteOrder);
+router.delete("/:orderId", verifyJWT, deleteOrder);
 
 export default router;

@@ -1,23 +1,16 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 
-import { User } from "../misc/type";
+import { WithAuthRequest } from "../misc/type";
 import { ForbiddenError } from "../errors/ApiError";
 
-const isAdmin = (user: User | undefined): boolean => {
-  if (!user || user.role !== "admin") {
-    return false;
-  }
-  return true
-}
-
 const adminCheck = (
-  request: Request,
+  request: WithAuthRequest,
   response: Response,
   next: NextFunction
 ) => {
-  const user = request.body as User;
-  const roleAdmin = isAdmin(user);
-  if (!roleAdmin) {
+  const user = request.decodedUser;
+
+  if (!user || user.role !== "admin") {
     next(new ForbiddenError("Access denied! You are not the admin!"));
     return;
   }
