@@ -117,6 +117,7 @@ export async function updateUser(
 ) {
   try {
     const userId = request.params.userId;
+    const oldPassword = request.body.oldPassword;
     const { firstname, lastname, email, password } = request.body;
 
     // Check if the new email already exists in the database
@@ -125,10 +126,24 @@ export async function updateUser(
       throw new BadRequest("Email already exists");
     }
 
-    // Hash the password
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Validate old password
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new NotFoundError(`Cannot find user with id ${userId}`);
+    }
+
+    const isMatched = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatched) {
+      return response.status(401).json({ message: "Invalid old password" });
+    }
+
+    // Hash the new password if provided
+    let hashedPassword = user.password;
+    if (password) {
+      const saltRounds = 10;
+      const salt = await bcrypt.genSalt(saltRounds);
+      hashedPassword = await bcrypt.hash(password, salt);
+    }
 
     const updatedUser = await usersService.updateUser(userId, {
       firstname,
@@ -136,18 +151,19 @@ export async function updateUser(
       email,
       password: hashedPassword,
     });
+
     response.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({
-        message: `Cannot find user with id ${request.params.userId}`,
+        message: error.message,
       });
       return;
     }
 
     if (error instanceof mongoose.Error.CastError) {
       response.status(404).json({
-        message: `wrong id format`,
+        message: "Wrong id format",
       });
       return;
     }
