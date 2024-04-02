@@ -116,15 +116,31 @@ export async function updateUser(
   next: NextFunction
 ) {
   try {
-    const updatedUser = await usersService.updateUser(
-      request.params.userId,
-      request.body
-    );
+    const userId = request.params.userId;
+    const { firstname, lastname, email, password } = request.body;
+
+    // Check if the new email already exists in the database
+    const existingUser = await User.findOne({ email });
+    if (existingUser && existingUser.id !== userId) {
+      throw new BadRequest("Email already exists");
+    }
+
+    // Hash the password
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const updatedUser = await usersService.updateUser(userId, {
+      firstname,
+      lastname,
+      email,
+      password: hashedPassword,
+    });
     response.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({
-        message: `Cannot find order with id ${request.params.userId}`,
+        message: `Cannot find user with id ${request.params.userId}`,
       });
       return;
     }
@@ -155,7 +171,7 @@ export async function deleteUser(
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({
-        message: `Cannot find order with id ${request.params.userId}`,
+        message: `Cannot find user with id ${request.params.userId}`,
       });
       return;
     }
