@@ -202,3 +202,38 @@ export async function deleteUser(
     next(new InternalServerError());
   }
 }
+
+// BAN A USER
+export async function banUser(
+  request: Request,
+  response: Response,
+  next: NextFunction
+) {
+  try {
+    const userId = request.params.userId;
+
+    const updatedUser = await usersService.updateUser(userId, { banStatus: true });
+
+    response.status(200).json({ message: "User banned successfully!", user: updatedUser });
+  } catch (error) {
+    next(new InternalServerError());
+  }
+}
+
+// UNBAN A USER
+export async function unbanUser(
+  request: Request,
+  response: Response,
+  next: NextFunction
+) {
+  try {
+    const userId = request.params.userId;
+
+    const updatedUser = await usersService.updateUser(userId, { banStatus: false });
+
+    response.status(200).json({ message: "User unbanned successfully!", user: updatedUser });
+  } catch (error) {
+    next(new InternalServerError());
+  }
+}
+

@@ -24,7 +24,8 @@ export type User = {
   email: string;
   role: string;
   avatar: string;
-  orders?: Order[]
+  orders?: Order[];
+  banStatus: boolean;
 };
 
 export type DecodedUser = {
