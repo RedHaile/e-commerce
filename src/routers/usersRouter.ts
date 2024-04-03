@@ -22,6 +22,7 @@ router.put("/:userId", verifyJWT, updatedUser);
 // FORGET PASSWORD REQUEST
 router.post("/password", requestPassword);
 
+// DELETE USER
 router.delete("/:userId", deleteUser);
 
 // BAN & UNBAN USERS
