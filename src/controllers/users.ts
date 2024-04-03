@@ -110,60 +110,65 @@ export async function loginUser(
   }
 }
 
-export async function updateUser(
+export async function updatedUser(
   request: Request,
   response: Response,
   next: NextFunction
 ) {
   try {
-    const userId = request.params.userId;
-    const oldPassword = request.body.oldPassword;
-    const { firstname, lastname, email, password } = request.body;
-
-    // Check if the new email already exists in the database
-    const existingUser = await User.findOne({ email });
-    if (existingUser && existingUser.id !== userId) {
-      throw new BadRequest("Email already exists");
-    }
-
-    // Validate old password
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new NotFoundError(`Cannot find user with id ${userId}`);
-    }
-
-    const isMatched = await bcrypt.compare(oldPassword, user.password);
-    if (!isMatched) {
-      return response.status(401).json({ message: "Invalid old password" });
-    }
-
-    // Hash the new password if provided
-    let hashedPassword = user.password;
-    if (password) {
-      const saltRounds = 10;
-      const salt = await bcrypt.genSalt(saltRounds);
-      hashedPassword = await bcrypt.hash(password, salt);
-    }
-
-    const updatedUser = await usersService.updateUser(userId, {
-      firstname,
-      lastname,
-      email,
-      password: hashedPassword,
-    });
-
+    const updatedUser = await usersService.updateUser(
+      request.params.userId,
+      request.body
+    );
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(request.body.password, salt);
+    request.body.password = hashedPassword; 
     response.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({
-        message: error.message,
+        message: `Cannot find user with id ${request.params.userId}`,
       });
       return;
     }
 
     if (error instanceof mongoose.Error.CastError) {
       response.status(404).json({
-        message: "Wrong id format",
+        message: `wrong id format`,
+      });
+      return;
+    }
+
+    next(new InternalServerError());
+  }
+}
+
+export async function requestPassword(
+  request: Request,
+  response: Response,
+  next: NextFunction
+) {
+  try {
+    const email = request.body.email;
+    const user = await usersService.getUserByEmail(email);
+    const userId = user._id
+
+    request.body.password = "123";
+    const updatedUser = await usersService.updateUser(userId, request.body);
+
+    response.status(200).json(`Your one-time password is ${request.body.password}, please log in and change immediately!`);
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      response.status(404).json({
+        message: `Cannot find user with id ${request.params.userId}`,
+      });
+      return;
+    }
+
+    if (error instanceof mongoose.Error.CastError) {
+      response.status(404).json({
+        message: `wrong id format`,
       });
       return;
     }
