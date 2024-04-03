@@ -61,7 +61,7 @@ export async function createUser(
       role: role,
     });
     const newUser = await usersService.createUser(user);
-    response.status(201).json({ newUser });
+    response.status(201).json(newUser);
   } catch (error) {
     next(new InternalServerError());
   }

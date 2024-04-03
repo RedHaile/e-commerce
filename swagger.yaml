@@ -23,10 +23,10 @@ paths:
       tags:
         - product
       summary: get all products
-      description: get all available products.
+      description: Get all available products.
       responses:
         '200':
-          description: get all products successfully
+          description: Get all products successfully
           content:
             application/json:
               schema:
@@ -42,7 +42,7 @@ paths:
       tags:
         - product
       summary: create a new product
-      description: create a new product
+      description: Create a new product
       requestBody:
         content:
           application/json:
@@ -50,7 +50,7 @@ paths:
               $ref: '#/components/schemas/Product'
       responses:
         '201':
-          description: create new product successfully
+          description: Create new product successfully
           content:
             application/json:
               schema:
@@ -163,16 +163,16 @@ paths:
   /users:
     get:
       tags:
-        - users
+        - user
       summary: get all users
-      description: get all available users.
+      description: Get all available users.
       responses:
         '200':
-          description: get all users successfully
+          description: Get all users successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/User'
         '500':
           description: Internal Server Error
           content:
@@ -182,8 +182,8 @@ paths:
     post:
       tags:
         - user
-      summary: create a new user
-      description: create a new user
+      summary: register user
+      description: Create a user account
       requestBody:
         content:
           application/json:
@@ -191,7 +191,7 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '201':
-          description: create new user successfully
+          description: Register user successfully
           content:
             application/json:
               schema:
@@ -207,10 +207,10 @@ paths:
     post:
       tags:
        - user
-      summary: Login user
-      description: Logs in a user with provided email and password
+      summary: login user
+      description: Log in a user with provided email and password
       requestBody:
-        description: Logs in with email and password
+        description: Log in with email and password
         required: true
         content:
           application/json:
@@ -241,7 +241,7 @@ paths:
       tags:
         - user
       summary: get a user
-      description: get a user
+      description: Get a user
       parameters:
         - name: userId
           required: true
@@ -251,7 +251,7 @@ paths:
             type: string
       responses:
         '200':
-          description: get a user successfully
+          description: Get a user successfully
           content:
             application/json:
               schema:
@@ -273,7 +273,7 @@ paths:
       tags:
         - user
       summary: update a user
-      description: update a user by the user id
+      description: Update a user by the user id
       parameters:
         - name: userId
           required: true
@@ -289,7 +289,7 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: the user with that user id is updated successfully
+          description: The user with that user id is updated successfully
         '404':
           description: User not found
           content:
@@ -306,7 +306,7 @@ paths:
       tags:
         - user
       summary: delete the user by the user id
-      description: delete the product by the user id
+      description: Delete the product by the user id
       parameters:
         - name: userId
           required: true
@@ -316,7 +316,7 @@ paths:
             type: string
       responses:
         '204':
-          description: the user with that user id is deleted successfully
+          description: The user with that user id is deleted successfully
         '404':
           description: User not found
           content:
@@ -333,11 +333,11 @@ paths:
   /users/password:
     post:
       tags:
-        - users
-      summary: "Forget Password Request"
-      description: "Request to reset password"
+        - user
+      summary: forget password request
+      description: Request to reset password
       requestBody:
-        description: "User email for password reset"
+        description: User email for password reset
         required: true
         content:
           application/json:
@@ -366,8 +366,8 @@ paths:
   /users/{userId}/ban:
    post:
     tags:
-      - users
-    summary: Ban a user
+      - user
+    summary: ban a user
     description: Ban a user by user ID (only accessible to admins)
     parameters:
       - name: userId
@@ -389,8 +389,8 @@ paths:
   /users/{userId}/unban:
    post:
     tags:
-      - users
-    summary: Unban a user
+      - user
+    summary: unban a user
     description: Unban a user by user ID (only accessible to admins)
     parameters:
       - name: userId
@@ -414,10 +414,10 @@ paths:
       tags:
         - order
       summary: get all orders
-      description: get all available orders.
+      description: Get all available orders.
       responses:
         '200':
-          description: get all orders successfully
+          description: Get all orders successfully
           content:
             application/json:
               schema:
@@ -433,7 +433,7 @@ paths:
       tags:
         - order
       summary: create a new order
-      description: create a new order
+      description: Create a new order
       requestBody:
         content:
           application/json:
@@ -441,7 +441,7 @@ paths:
               $ref: '#/components/schemas/Order'
       responses:
         '201':
-          description: create new order successfully
+          description: Create new order successfully
           content:
             application/json:
               schema:
@@ -460,7 +460,7 @@ paths:
       tags:
         - order
       summary: get an order
-      description: get an order
+      description: Get an order
       parameters:
         - name: orderId
           required: true
@@ -470,7 +470,7 @@ paths:
             type: string
       responses:
         '200':
-          description: get an order successfully
+          description: Get an order successfully
           content:
             application/json:
               schema:
@@ -488,7 +488,7 @@ paths:
       tags:
         - order
       summary: update an order
-      description: update an order by the order id
+      description: Update an order by the order id
       parameters:
         - name: orderId
           required: true
@@ -504,7 +504,7 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: the user with that user id is updated successfully
+          description: The user with that user id is updated successfully
         '404':
           description: Order not found
           content:
@@ -524,7 +524,7 @@ paths:
       tags:
         - order
       summary: delete the order by the order id
-      description: delete the order by the order id
+      description: Delete the order by the order id
       parameters:
         - name: orderId
           required: true
@@ -534,7 +534,7 @@ paths:
             type: string
       responses:
         '204':
-          description: the order with that order id is deleted successfully
+          description: The order with that order id is deleted successfully
         '404':
           description: Order not found
           content:
@@ -552,10 +552,10 @@ paths:
       tags:
         - category
       summary: get the list of categories
-      description: get the list of categories
+      description: Get the list of categories
       responses:
         '200':
-          description: get the categories list successfully
+          description: Get the categories list successfully
           content:
             application/json:
               schema:
@@ -571,16 +571,16 @@ paths:
       tags:
         - category
       summary: create a new category
-      description: create a new category
+      description: Create a new category
       requestBody:
-        description: create a new category
+        description: Create a new category
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Category'
       responses:
         '201':
-          description: category created successfully
+          description: Category created successfully
           content:
             application/json:
               schema:
@@ -597,7 +597,7 @@ paths:
       tags:
         - category
       summary: get a category by category id
-      description: get a category by category id
+      description: Get a category by category id
       parameters:
         - name: categoryId
           required: true
@@ -607,7 +607,7 @@ paths:
             type: string
       responses:
         '200':
-          description: get a categiry successfully
+          description: Get a category successfully
           content:
             application/json:
               schema:
@@ -629,7 +629,7 @@ paths:
       tags:
         - category
       summary: update a category by the category id
-      description: update a category by the category id
+      description: Update a category by the category id
       parameters:
         - name: categoryId
           required: true
@@ -645,7 +645,7 @@ paths:
               $ref: '#/components/schemas/Category'
       responses:
         '200':
-          description: category is updated successfully
+          description: Category is updated successfully
           content:
             application/json:
               schema:
@@ -673,7 +673,7 @@ paths:
       tags:
         - category
       summary: delete the category by the category id
-      description: delete the category by the category id
+      description: Delete the category by the category id
       parameters:
         - name: catgoryId
           required: true
@@ -683,7 +683,7 @@ paths:
             type: string
       responses:
         '204':
-          description: the category with category id is deleted successfully
+          description: The category with category id is deleted successfully
         '404':
           description: Category not found
           content:
@@ -696,6 +696,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     Product:
@@ -725,6 +726,7 @@ components:
           example: 'https://picsum.photos/seed/picsum/600/400'
         categoryId:
           type: string
+          example: 104
 
     User:
       type: object
@@ -751,6 +753,13 @@ components:
         avatar:
           type: string
           example: 'https://fastly.picsum.photos/id/5/640/480.jpg'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        banStatus:
+          type: boolean
+          example: false
 
     Category:
       type: object

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-import { UnauthorizedError } from "../errors/ApiError";
+import { ForbiddenError, UnauthorizedError } from "../errors/ApiError";
 import { DecodedUser, WithAuthRequest } from "../misc/type"
 
 const verifyJWT = async (request: WithAuthRequest, response: Response, next: NextFunction) => {
@@ -18,7 +18,7 @@ const verifyJWT = async (request: WithAuthRequest, response: Response, next: Nex
 
       next();
     } catch (error) {
-      next(new UnauthorizedError("Invalid token!"));
+      next(new ForbiddenError("Invalid token!"));
     }
   } else {
     next(new UnauthorizedError("Authorization header missing")) 
