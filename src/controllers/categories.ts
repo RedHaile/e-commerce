@@ -42,7 +42,7 @@ export async function getCategoryById(
       request.params.categoryId
     );
     console.log(foundCategory, "found");
-    response.status(201).json(foundCategory);
+    response.status(200).json(foundCategory);
   } catch (error) {
     if (error instanceof NotFoundError) {
       response.status(404).json({
@@ -99,7 +99,7 @@ export async function deleteCategoryById(
     const deletedCategory = categoriesService.deleteCategoryById(
       request.params.categoryId
     );
-    response.status(200).json(deletedCategory);
+    response.status(204).json(deletedCategory);
   } catch (error) {
     // handle error
     if (error instanceof NotFoundError) {

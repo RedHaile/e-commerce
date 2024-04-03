@@ -50,8 +50,8 @@ The minimum requirements of the project.
 
 4. Order
 
-- create order
-- get order by user id
+- Create orders
+- Get orders by user id
 
 ## Response Format
 

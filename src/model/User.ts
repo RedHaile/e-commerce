@@ -36,6 +36,10 @@ const UserSchema = new mongoose.Schema({
       type: OrderSchema,
     },
   ],
+  banStatus: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model<UserDocument>("Users", UserSchema);
