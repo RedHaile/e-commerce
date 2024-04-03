@@ -203,6 +203,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           
+  /users/login:
+    post:
+      tags:
+       - user
+      summary: Login user
+      description: Logs in a user with provided email and password
+      requestBody:
+        description: Logs in with email and password
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/{userId}:
     get:
@@ -297,6 +329,85 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
+  /users/password:
+    post:
+      tags:
+        - users
+      summary: "Forget Password Request"
+      description: "Request to reset password"
+      requestBody:
+        description: "User email for password reset"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200': 
+          description: Password reset request sent successfully
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{userId}/ban:
+   post:
+    tags:
+      - users
+    summary: Ban a user
+    description: Ban a user by user ID (only accessible to admins)
+    parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: User banned successfully
+      '500':
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+
+  /users/{userId}/unban:
+   post:
+    tags:
+      - users
+    summary: Unban a user
+    description: Unban a user by user ID (only accessible to admins)
+    parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: User unbanned successfully
+      '500':
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
 
   /orders:
     get:
@@ -623,13 +734,17 @@ components:
           example: '203'
         email:
           type: string
+          format: email
           example: 'user@mail.com'
         password:
           type: string
           example: 'password'
-        fullname:
+        firstname:
           type: string
-          example: 'John Smith'
+          example: 'John'
+        lasttname:
+          type: string
+          example: 'Smith'
         role:
           type: string
           example: 'customer'
