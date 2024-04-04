@@ -2,8 +2,10 @@ import express, { NextFunction, Request, Response } from "express";
 
 import categoriesService from "../services/categories";
 import Category, { CategoryDocument } from "../model/Category";
-import { InternalServerError, NotFoundError } from "../errors/ApiError";
+import { ApiError, InternalServerError, NotFoundError } from "../errors/ApiError";
 import mongoose from "mongoose";
+import apiErrorhandler from "../middlewares/apiErrorhandler";
+import { error } from "console";
 
 export async function getAllCategories(
   _: Request,
@@ -44,21 +46,20 @@ export async function getCategoryById(
     console.log(foundCategory, "found");
     response.status(200).json(foundCategory);
   } catch (error) {
-    if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cant find category with id ${request.params.categoryId}`,
-      });
-    }
     if (error instanceof mongoose.Error.CastError) {
       response.status(404).json({
-        message: `wrong id format`,
+        message: `Invalid category id format`,
       });
       return;
     }
 
-    next(new InternalServerError());
+    if (error instanceof NotFoundError) {
+      apiErrorhandler(error, request, response, next);
+    } 
+
+    next(error)
+    }
   }
-}
 
 export async function updateCategory(
   request: Request,
@@ -75,12 +76,11 @@ export async function updateCategory(
     response.status(200).json(updatedCategory);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Category with id ${request.params.categoryId} not found`,
-      });
+      apiErrorhandler(error, request, response, next);
     }
+    
     if (error instanceof mongoose.Error.CastError) {
-      response.status(400).json({
+      response.status(404).json({
         message: `Invalid category id format`,
       });
       return;
@@ -103,12 +103,7 @@ export async function deleteCategoryById(
   } catch (error) {
     // handle error
     if (error instanceof NotFoundError) {
-      response
-        .status(404)
-        .json({
-          message: `Cant find category with id ${request.params.categoryId}`,
-        });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     next(new InternalServerError());
   }

@@ -5,6 +5,7 @@ import ProductsService from "../services/products";
 import Product, { ProductDocument } from "../model/Product";
 import { InternalServerError, NotFoundError } from "../errors/ApiError";
 import { CategoryProductsQuery } from "../misc/type";
+import apiErrorhandler from "../middlewares/apiErrorhandler";
 
 // GET PRODUCTS
 export async function getAllProducts(request: Request, response: Response, next: NextFunction) {
@@ -65,10 +66,7 @@ export async function getProduct(request: Request, response: Response, next: Nex
     response.status(200).json(foundProduct);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find product with id ${request.params.productId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     
     if (error instanceof mongoose.Error.CastError) {
@@ -93,10 +91,7 @@ export async function updateProduct(request: Request, response: Response, next: 
     response.status(200).json(foundProduct);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find product with id ${request.params.productId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     
     if (error instanceof mongoose.Error.CastError) {
@@ -120,10 +115,7 @@ export async function deleteProduct(request: Request, response: Response, next: 
     response.sendStatus(204);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find product with id ${request.params.productId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     
     if (error instanceof mongoose.Error.CastError) {
