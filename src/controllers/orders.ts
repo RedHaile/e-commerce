@@ -5,6 +5,7 @@ import ordersService from "../services/orders";
 import Order, { OrderDocument } from "../model/Order";
 import { InternalServerError, NotFoundError } from "../errors/ApiError";
 import User from "../model/User";
+import apiErrorhandler from "../middlewares/apiErrorhandler";
 
 
 // GET ORDERS
@@ -43,10 +44,7 @@ export async function getOrder(request: Request, response: Response, next: NextF
     response.status(200).json(foundOrder?.orders);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find order with id ${request.params.orderId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     
     if (error instanceof mongoose.Error.CastError) {
@@ -70,10 +68,7 @@ export async function updateOrder(request: Request, response: Response, next: Ne
     response.status(200).json(foundOrder);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find order with id ${request.params.orderId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     
     if (error instanceof mongoose.Error.CastError) {
@@ -97,10 +92,7 @@ export async function deleteOrder(request: Request, response: Response, next: Ne
     response.sendStatus(204);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find order with id ${request.params.orderId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
     
     if (error instanceof mongoose.Error.CastError) {

@@ -9,8 +9,10 @@ import {
   BadRequest,
   InternalServerError,
   NotFoundError,
+  ConflictError,
 } from "../errors/ApiError";
 import User, { UserDocument } from "../model/User";
+import apiErrorhandler from "../middlewares/apiErrorhandler";
 
 export async function getAllUsers(
   _: Request,
@@ -63,6 +65,12 @@ export async function createUser(
     const newUser = await usersService.createUser(user);
     response.status(201).json(newUser);
   } catch (error) {
+    if (error instanceof ConflictError) {
+      response.status(error.statusCode).json({
+        message: error.message,
+      });
+      return;
+    }
     next(new InternalServerError());
   }
 }
@@ -102,8 +110,7 @@ export async function loginUser(
     response.json({ userData, token });
   } catch (error) {
     if (error instanceof BadRequest) {
-      response.status(400).json({ error: error.message });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
 
     next(new InternalServerError());
@@ -116,21 +123,20 @@ export async function updatedUser(
   next: NextFunction
 ) {
   try {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(request.body.password, salt);
+    request.body.password = hashedPassword;
+
     const updatedUser = await usersService.updateUser(
       request.params.userId,
       request.body
     );
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(request.body.password, salt);
-    request.body.password = hashedPassword; 
+    
     response.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find user with id ${request.params.userId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
 
     if (error instanceof mongoose.Error.CastError) {
@@ -160,10 +166,7 @@ export async function requestPassword(
     response.status(200).json(`Your one-time password is ${request.body.password}, please log in and change immediately!`);
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find user with id ${request.params.userId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
 
     if (error instanceof mongoose.Error.CastError) {
@@ -191,10 +194,7 @@ export async function deleteUser(
     }
   } catch (error) {
     if (error instanceof NotFoundError) {
-      response.status(404).json({
-        message: `Cannot find user with id ${request.params.userId}`,
-      });
-      return;
+      apiErrorhandler(error, request, response, next);
     }
 
     if (error instanceof mongoose.Error.CastError) {

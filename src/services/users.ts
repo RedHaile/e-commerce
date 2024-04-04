@@ -1,4 +1,4 @@
-import { NotFoundError } from "../errors/ApiError";
+import { ConflictError, NotFoundError } from "../errors/ApiError";
 import User, { UserDocument } from "../model/User";
 
 // services: async function
@@ -13,9 +13,13 @@ const getAllUsers = async (): Promise<UserDocument[]> => {
 }
 };
 
-const createUser = async (User: UserDocument): Promise<UserDocument> => {
+const createUser = async (user: UserDocument): Promise<UserDocument> => {
+  const existingUser = await User.findOne({ email: user.email });
+  if (existingUser) {
+    throw new ConflictError("Email address already exists");
+  }
   try {
-    return await User.save();
+    return await user.save();
   } catch (error) {
     throw new Error("Failed to create user");
   }

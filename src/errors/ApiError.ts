@@ -26,7 +26,6 @@ export class ForbiddenError extends ApiError {
 // new ForbiddenError("You dont have permission to create new product")
 
 // 401: token is expire/ dont log in
-
 export class UnauthorizedError extends ApiError {
   constructor(readonly message: string = "Unauthorized request") {
     super(401, message);
@@ -44,5 +43,12 @@ export class InternalServerError extends ApiError {
 export class BadRequest extends ApiError {
   constructor(readonly message: string = "Bad request") {
     super(400, message);
+  }
+}
+
+// 409
+export class ConflictError extends ApiError {
+  constructor(readonly message: string = "Conflict") {
+    super(409, message);
   }
 }
