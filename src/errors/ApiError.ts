@@ -1,7 +1,3 @@
-// helper/error
-// custom error
-// Error
-
 // Error: type of error
 export class ApiError extends Error {
   constructor(readonly statusCode: number, readonly message: string) {
@@ -9,7 +5,7 @@ export class ApiError extends Error {
   }
 }
 
-// cant find smt
+// cannot find something
 export class NotFoundError extends ApiError {
   constructor(readonly message: string = "Not Found") {
     super(404, message);
@@ -22,8 +18,6 @@ export class ForbiddenError extends ApiError {
     super(403, message);
   }
 }
-// new ForbiddenError("You are not an admin")
-// new ForbiddenError("You dont have permission to create new product")
 
 // 401: token is expire/ dont log in
 export class UnauthorizedError extends ApiError {
@@ -39,14 +33,14 @@ export class InternalServerError extends ApiError {
   }
 }
 
-// 400
+// 400: bad request
 export class BadRequest extends ApiError {
   constructor(readonly message: string = "Bad request") {
     super(400, message);
   }
 }
 
-// 409
+// 409: conflict
 export class ConflictError extends ApiError {
   constructor(readonly message: string = "Conflict") {
     super(409, message);

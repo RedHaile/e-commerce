@@ -1,70 +1,159 @@
-# Backend Assignment - API
+# E-commerce API
 
 ## Members
 
-1. Thuy Dang
-2. Redeat Haile
-3. Khang Nguyen
+1. [Thuy Dang](https://github.com/Kimmi17)
+2. [Redeat Haile](https://github.com/RedHaile)
+3. [Khang Nguyen](https://github.com/Kudoo39)
+
+## Description
+
+This repository contains code for a backend application built using Node.js, Express.js, Mongoose, and TypeScript. The application is designed to handle various CRUD operations related to products, users, orders, and categories. It utilizes MongoDB as its database.
+Provide a brief overview of the project, including its purpose and main functionalities.
+
+## Table of Contents
+
+1. [Getting Started](#getting-started)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Project Structure](#project-structure)
+5. [Testing](#testing)
+6. [Deployment](#deployment)
+
+## Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+Node.js (v12.x or later recommended)
+npm (Node Package Manager)
+yarn (package manager)
+
+### Installation
+
+To get started with the project, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/Kudoo39/e-commerce`
+2. Navigate to the project directory: `cd e-commerce`
+3. Install dependencies: `npm install` or `yarn install`
+4. Run the project: `npm run start` or `yarn start`
+5. Run the application in developer mode: `npm run dev`
+
+## Features
+
+The following endpoints are available in the application:
+
+### Products
+
+- GET /products: Get all products.
+- GET /products/category/:categoryId: Get products by category.
+- POST /products: Create a new product.
+- GET /products/:productId: Get a product by ID.
+- PUT /products/:productId: Update a product.
+- DELETE /products/:productId: Delete a product.
+
+### Users
+
+- GET /users: Get all users.
+- POST /users: Register a new user.
+- POST /users/login: Login a user.
+- PUT /users/:userId: Update a user.
+- DELETE /users/:userId: Delete a user.
+- POST /users/:userId/ban: Ban a user.
+- POST /users/:userId/unban: Unban a user.
+- POST /users/password: Request a one-time password for a user.
+
+### Orders
+
+- GET /orders: Get all orders.
+- POST /orders/:userId: Create a new order for a user.
+- GET /orders/:userId: Get orders for a user.
+- PUT /orders/:orderId: Update an order.
+- DELETE /orders/:orderId: Delete an order.
+
+### Categories
+
+- GET /categories: Get all categories.
+- POST /categories: Create a new category.
+- GET /categories/:categoryId: Get a category by ID.
+- PUT /categories/:categoryId: Update a category.
+- DELETE /categories/:categoryId: Delete a category.
+
+### Error Handling
+
+Errors are handled centrally using custom error classes defined in the `errors/ApiErrors.ts` file. These errors are then caught and processed in the middleware `middlewares/apiErrorhandler.ts`.
+
+### Custom Error Classes
+
+- NotFoundError: Thrown when the requested resource is not found.
+- ForbiddenError: Thrown when the user does not have permission to access a resource.
+- UnauthorizedError: Thrown when the user is not authenticated to access a resource.
+- InternalServerError: Thrown when an unexpected error occurs on the server.
+- BadRequest: Thrown when the request is malformed or invalid.
+- ConflictError: Thrown when there is a conflict with the current state of the server.
+
+## Technologies Used
+
+- Node.js with Typescript
+- Express.js
+- Mongoose
+- nodemon
+- bcrypt
+- JWT (JSON Web Tokens)
+- validator
+- jest
+
+## Project Structure
+
+```
+src
+ ┣ assets
+ ┃ ┗ erd.png
+ ┣ controllers
+ ┃ ┣ categories.ts
+ ┃ ┣ orders.ts
+ ┃ ┣ products.ts
+ ┃ ┗ users.ts
+ ┣ errors
+ ┃ ┗ ApiError.ts
+ ┣ middlewares
+ ┃ ┣ adminCheck.ts
+ ┃ ┣ apiErrorhandler.ts
+ ┃ ┗ verifyJWT.ts
+ ┣ misc
+ ┃ ┗ type.ts
+ ┣ model
+ ┃ ┣ Category.ts
+ ┃ ┣ Order.ts
+ ┃ ┣ OrderProduct.ts
+ ┃ ┣ Product.ts
+ ┃ ┗ User.ts
+ ┣ routers
+ ┃ ┣ categoriesRouter.ts
+ ┃ ┣ ordersRouter.ts
+ ┃ ┣ productsRouter.ts
+ ┃ ┗ usersRouter.ts
+ ┣ services
+ ┃ ┣ categories.ts
+ ┃ ┣ orders.ts
+ ┃ ┣ products.ts
+ ┃ ┗ users.ts
+ ┣ app.ts
+ ┗ server.ts
+ ```
+
+ ## Entity Relationship Diagram
 
  ![erd](./src/assets/erd.png)
 
-This is the README for an Express backend assignment that requires you to implement the REST APIs for an E-commerce based on the Entity-Relationship Diagram (ERD) assignment. The ERD assignment should outline the data model, including the relationships and attributes of entities within the system. You are tasked with designing and documenting the REST APIs according to the ERD specifications.
+ ## Testing
 
-## Introduction
+1. Ensure all dependencies are installed: `npm install` or `yarn install`
+2. Run the test suite: `npm run test` or `yarn test`
 
-This Express backend assignment involves building a RESTful API for an E-commerce. You are provided with an Entity-Relationship Diagram (ERD) assignment that outlines the data model, including the relationships and attributes of entities such as products, users, orders and admin roles.
+ ## Deployment
 
-## Entity CRUD Operations
+ - The project is deployed using Render: https://fs17-backend.onrender.com/
 
-`Before` implementing JWT authentication, `you are required to create the basic CRUD` (Create, Read, Update, Delete) operations for the entities based on the specifications provided in the ERD assignment. This section focuses on designing and implementing the core functionality to manage and interact with the specified entities.
 
-## Authentication
-
-For security, this API should implement user authentication using JSON Web Tokens (JWT). Each user should have a unique username and password OR broker authentication. Certain admin endpoints may require special privileges for access.
-
-## Minimum requirements
-
-The minimum requirements of the project.
-
-1. Products
-
-- Attributes: ID, name, description, categories, variants/ sizes
-- Get list of all products with/without pagination
-- Get list of products, filtering (search) by: name, categories, variant
-- Get a product by ID
-
-2. Users
-
-- Attributes: ID, first name, last name, email
-- Sign up a new user (username, password, first name, last name, email)
-- Sign in user with username/password
-- Update user profile (first name, last name, email)
-- Forget password request
-- Change password (username, old password, new password)
-
-3. Admin
-   Special users with certain privileges
-
-- Add a new product, update info of a product, remove a product
-- Ban a user, unban a user
-
-4. Order
-
-- Create orders
-- Get orders by user id
-
-## Response Format
-
-All API responses should be provided in JSON format. A typical response should include a `status`, `data`, and an optional `message` field. The `status` field should indicate the success or failure of the request.
-
-## Error Handling
-
-The API should include comprehensive error handling with clear and informative error messages. Errors should be accompanied by appropriate HTTP status codes.
-
-## Testing
-
-Developers should conduct unit tests and integration tests to ensure the reliability and correctness of the API. Instructions for running the tests should be provided in the project's documentation.
-
-## Deployment
-
-The API should be deployed before the **`DEADLINE`**

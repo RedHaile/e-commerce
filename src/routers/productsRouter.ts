@@ -6,7 +6,6 @@ import adminCheck from "../middlewares/adminCheck";
 
 const router = express.Router();
 
-// BASE: api/v1/products
 // GET PRODUCTS
 router.get("/", getAllProducts)
 

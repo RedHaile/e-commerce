@@ -1,11 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 
 import categoriesService from "../services/categories";
 import Category, { CategoryDocument } from "../model/Category";
-import { ApiError, InternalServerError, NotFoundError } from "../errors/ApiError";
-import mongoose from "mongoose";
+import { InternalServerError, NotFoundError } from "../errors/ApiError";
 import apiErrorhandler from "../middlewares/apiErrorhandler";
-import { error } from "console";
 
 export async function getAllCategories(
   _: Request,
@@ -43,7 +42,6 @@ export async function getCategoryById(
     const foundCategory = await categoriesService.getCategoryById(
       request.params.categoryId
     );
-    console.log(foundCategory, "found");
     response.status(200).json(foundCategory);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {

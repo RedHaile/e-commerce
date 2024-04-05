@@ -12,9 +12,8 @@ import adminCheck from "../middlewares/adminCheck";
 
 const router = express.Router();
 
-// BASE: api/v1/orders
 // GET ORDERS
-router.get("/", verifyJWT, getAllOrders);
+router.get("/", verifyJWT, adminCheck, getAllOrders);
 
 // A USER CREATES AN ORDER
 router.post("/:userId", verifyJWT, createOrder);
