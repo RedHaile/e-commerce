@@ -1,5 +1,3 @@
-// //userRouter
-
 import express from "express";
 
 import { createUser, deleteUser, loginUser, getAllUsers, updatedUser, requestPassword, banUser, unbanUser } from "../controllers/users";

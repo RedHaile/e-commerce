@@ -1,4 +1,5 @@
 import mongoose, { Document, Model } from "mongoose";
+
 import { User } from "../misc/type";
 import { OrderSchema } from "./Order";
 

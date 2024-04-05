@@ -7,7 +7,6 @@ import { InternalServerError, NotFoundError } from "../errors/ApiError";
 import User from "../model/User";
 import apiErrorhandler from "../middlewares/apiErrorhandler";
 
-
 // GET ORDERS
 export async function getAllOrders(_: Request, response: Response, next: NextFunction) {
   try {
