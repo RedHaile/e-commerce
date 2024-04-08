@@ -141,6 +141,8 @@ src
  ┃ ┣ orders.ts
  ┃ ┣ products.ts
  ┃ ┗ users.ts
+ ┣ validations
+ ┃ ┗ userValidation.ts
  ┣ app.ts
  ┗ server.ts
  ```
