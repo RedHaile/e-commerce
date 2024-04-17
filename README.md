@@ -1,11 +1,5 @@
 # E-commerce API
 
-## Members
-
-1. [Thuy Dang](https://github.com/Kimmi17)
-2. [Redeat Haile](https://github.com/RedHaile)
-3. [Khang Nguyen](https://github.com/Kudoo39)
-
 ## Description
 
 This repository contains code for a backend application built using Node.js, Express.js, Mongoose, and TypeScript. The application is designed to handle various CRUD operations related to products, users, orders, and categories. It utilizes MongoDB as its database.
