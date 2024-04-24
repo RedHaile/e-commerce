@@ -140,7 +140,13 @@ src
  ┣ app.ts
  ┗ server.ts
  ```
+ ## .env.example 
 
+ - MONGODB_URL=mongodb+srv://username:password@your-mongodb-cluster-url
+ - PORT=''
+ - JWT_SECRET=''
+ - DEFAULT_PASSWORD=123
+ 
  ## Entity Relationship Diagram
 
  ![erd](./src/assets/erd.png)
