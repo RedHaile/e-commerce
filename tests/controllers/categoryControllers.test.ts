@@ -41,50 +41,54 @@ describe("category controller test", () => {
   test("should delete a category", async () => {
     // create a category first then delete it
     const responseToCreate = await request(app)
-    .post("/api/v1/categories")
-    .send({ name: "categoryDelete" });
+      .post("/api/v1/categories")
+      .send({ name: "categoryDelete" });
 
     // check if this category is created successfully
     expect(responseToCreate.status).toBe(201);
 
     // delete that category
-    const response = await request(app).delete(`/api/v1/categories/${responseToCreate.body._id}`)
+    const response = await request(app).delete(
+      `/api/v1/categories/${responseToCreate.body._id}`
+    );
     expect(response.status).toBe(204);
   });
 
   // UPDATE A CATEGORY
   test("should update a category", async () => {
-      // create a category first then update it
-      const responseToCreate = await request(app)
+    // create a category first then update it
+    const responseToCreate = await request(app)
       .post("/api/v1/categories")
       .send({ name: "categoryUpdate" });
 
-      // check if this category is created successfully
-      expect(responseToCreate.status).toBe(201);
+    // check if this category is created successfully
+    expect(responseToCreate.status).toBe(201);
 
-      // update that category
-      const response = await request(app)
+    // update that category
+    const response = await request(app)
       .put(`/api/v1/categories/${responseToCreate.body._id}`)
       .send({ name: "updatedCategoryUpdate" });
 
-      // Check if update was successful
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty("_id");
-      expect(response.body).toHaveProperty("name");
-      expect(response.body.name).toEqual("updatedCategoryUpdate");
+    // Check if update was successful
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("_id");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body.name).toEqual("updatedCategoryUpdate");
   });
 
   // GET CATEGORY BY ID
   test("should get a category by Id", async () => {
     // create a category first
     const responseToGet = await request(app)
-    .post("/api/v1/categories")
-    .send({ name: "categoryGet" });
+      .post("/api/v1/categories")
+      .send({ name: "categoryGet" });
 
     // check if this category is created successfully
     expect(responseToGet.status).toBe(201);
 
-    const response = await request(app).get(`/api/v1/categories/${responseToGet.body._id}`);
+    const response = await request(app).get(
+      `/api/v1/categories/${responseToGet.body._id}`
+    );
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("_id");
     expect(response.body).toHaveProperty("name");

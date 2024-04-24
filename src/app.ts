@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 
 import productsRouter from "./routers/productsRouter";
 import usersRouter from "./routers/usersRouter";
@@ -7,7 +8,9 @@ import categoriesRouter from "./routers/categoriesRouter";
 import ordersRouter from "./routers/ordersRouter";
 import apiErrorhandler from "./middlewares/apiErrorhandler";
 
+
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 dotenv.config({ path: ".env" });

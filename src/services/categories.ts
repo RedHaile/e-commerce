@@ -22,35 +22,46 @@ const createCategory = async (
 // To do: handle error
 const getCategoryById = async (
   id: string
-): Promise<CategoryDocument | undefined> => {
-  const foundCategory = await Category.findById(id);
-  if (foundCategory) {
-    return foundCategory;
+): Promise<CategoryDocument> => {
+  try {
+    const foundCategory = await Category.findById(id);
+    if (foundCategory) {
+      return foundCategory;
+    }
+    throw new NotFoundError();
+  } catch (error) {
+    throw new Error("Failed to get category by ID");
   }
-  throw new NotFoundError();
 };
 
 const deleteCategoryById = async (id: string) => {
-  const foundCategory = await Category.findByIdAndDelete(id);
-  if (foundCategory) {
-    return foundCategory;
+  try {
+    const foundCategory = await Category.findByIdAndDelete(id);
+    if (foundCategory) {
+      return foundCategory;
+    }
+    throw new NotFoundError();
+  } catch (error) {
+    throw new Error("Failed to delete category by ID");
   }
-  throw new NotFoundError();
 };
-
+  
 const updateCategory = async (
   id: string,
   newInformation: Partial<CategoryDocument>
 ) => {
-  const updatedCategory = await Category.findByIdAndUpdate(id, newInformation, {
-    new: true,
-  });
-  if (updatedCategory) {
-    return updatedCategory;
+  try {
+    const updatedCategory = await Category.findByIdAndUpdate(id, newInformation, {
+      new: true,
+    });
+    if (updatedCategory) {
+      return updatedCategory;
+    }
+    throw new NotFoundError();
+  } catch (error) {
+    throw new Error("Failed to update category");
   }
-  throw new NotFoundError();
 };
-
 export default {
   getAllCategories,
   createCategory,

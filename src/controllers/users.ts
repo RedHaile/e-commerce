@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 
+import { generateHashedPassword } from "../utils/passwordUtils";
 import usersService from "../services/users";
 import {
   BadRequest,
@@ -13,6 +14,8 @@ import {
 } from "../errors/ApiError";
 import User, { UserDocument } from "../model/User";
 import apiErrorhandler from "../middlewares/apiErrorhandler";
+import { createUserValidation } from "../validations/userValidation";
+import { generateToken } from "../utils/tokenUtils";
 
 export async function getAllUsers(
   _: Request,
@@ -27,40 +30,23 @@ export async function getAllUsers(
   }
 }
 
-// REGISTER
 export async function createUser(
   request: Request,
   response: Response,
   next: NextFunction
 ) {
   try {
-    const { firstname, lastname, email, password, role } = request.body;
+    const { firstname, lastname, email, password } = request.body;
 
-    // Check the required fields are provided
-    if (!firstname || !lastname || !email || !password || !role) {
-      throw new BadRequest("Fill out the required fields");
-    }
+    await createUserValidation.validateAsync(request.body);
 
-    // check the valid role
-    if (role !== "customer" && role !== "admin") {
-      throw new BadRequest("Invalid role");
-    }
-
-    // Validate email
-    if (!validator.isEmail(email)) {
-      throw new BadRequest("Invalid email");
-    }
-
-    const saltRounds = 10;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    const hashedPassword = await generateHashedPassword(password);
     const user = new User({
       firstname: firstname,
       lastname: lastname,
       email: email,
       password: hashedPassword,
-      role: role,
+      role: "customer",
     });
     const newUser = await usersService.createUser(user);
     response.status(201).json(newUser);
@@ -75,7 +61,6 @@ export async function createUser(
   }
 }
 
-// LOGIN
 export async function loginUser(
   request: Request,
   response: Response,
@@ -88,25 +73,12 @@ export async function loginUser(
 
     const isMatched = await bcrypt.compare(password, hashedPassword);
 
-    if (isMatched === false && password !== hashedPassword) {
+    if (isMatched === false) {
       throw new BadRequest("Wrong password, please try again!");
     }
 
-    // CREATE TOKEN
-    const JWT_SECRET = process.env.JWT_SECRET as string;
+    const token = generateToken(userData);
 
-    const token = jwt.sign(
-      {
-        // DO NOT PROVIDE PASSWORD HERE
-        email: userData.email,
-        role: userData.role,
-        _id: userData._id,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: "1h",
-      }
-    );
     response.json({ userData, token });
   } catch (error) {
     if (error instanceof BadRequest) {
@@ -132,7 +104,7 @@ export async function updatedUser(
       request.params.userId,
       request.body
     );
-    
+
     response.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof NotFoundError) {
@@ -158,12 +130,16 @@ export async function requestPassword(
   try {
     const email = request.body.email;
     const user = await usersService.getUserByEmail(email);
-    const userId = user._id
+    const userId = user._id;
 
     request.body.password = "123";
     const updatedUser = await usersService.updateUser(userId, request.body);
 
-    response.status(200).json(`Your one-time password is ${request.body.password}, please log in and change immediately!`);
+    response
+      .status(200)
+      .json(
+        `Your one-time password is ${request.body.password}, please log in and change immediately!`
+      );
   } catch (error) {
     if (error instanceof NotFoundError) {
       apiErrorhandler(error, request, response, next);
@@ -208,7 +184,6 @@ export async function deleteUser(
   }
 }
 
-// BAN A USER
 export async function banUser(
   request: Request,
   response: Response,
@@ -217,15 +192,18 @@ export async function banUser(
   try {
     const userId = request.params.userId;
 
-    const updatedUser = await usersService.updateUser(userId, { banStatus: true });
+    const updatedUser = await usersService.updateUser(userId, {
+      banStatus: true,
+    });
 
-    response.status(200).json({ message: "User banned successfully!", user: updatedUser });
+    response
+      .status(200)
+      .json({ message: "User banned successfully!", user: updatedUser });
   } catch (error) {
     next(new InternalServerError());
   }
 }
 
-// UNBAN A USER
 export async function unbanUser(
   request: Request,
   response: Response,
@@ -234,11 +212,14 @@ export async function unbanUser(
   try {
     const userId = request.params.userId;
 
-    const updatedUser = await usersService.updateUser(userId, { banStatus: false });
+    const updatedUser = await usersService.updateUser(userId, {
+      banStatus: false,
+    });
 
-    response.status(200).json({ message: "User unbanned successfully!", user: updatedUser });
+    response
+      .status(200)
+      .json({ message: "User unbanned successfully!", user: updatedUser });
   } catch (error) {
     next(new InternalServerError());
   }
 }
-

@@ -52,12 +52,12 @@ export async function getCategoryById(
     }
 
     if (error instanceof NotFoundError) {
-      apiErrorhandler(error, request, response, next);
-    } 
-
-    next(error)
+      next(error);
+      return;
     }
+    next(new InternalServerError("Internal error"));
   }
+}
 
 export async function updateCategory(
   request: Request,
@@ -76,7 +76,7 @@ export async function updateCategory(
     if (error instanceof NotFoundError) {
       apiErrorhandler(error, request, response, next);
     }
-    
+
     if (error instanceof mongoose.Error.CastError) {
       response.status(404).json({
         message: `Invalid category id format`,
@@ -99,7 +99,6 @@ export async function deleteCategoryById(
     );
     response.status(204).json(deletedCategory);
   } catch (error) {
-    // handle error
     if (error instanceof NotFoundError) {
       apiErrorhandler(error, request, response, next);
     }

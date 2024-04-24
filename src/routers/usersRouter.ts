@@ -3,16 +3,17 @@ import express from "express";
 import { createUser, deleteUser, loginUser, getAllUsers, updatedUser, requestPassword, banUser, unbanUser } from "../controllers/users";
 import verifyJWT from "../middlewares/verifyJWT";
 import adminCheck from "../middlewares/adminCheck";
+import { validateCreateUser, validateLoginUser } from "../validations/userValidation";
 
 const router = express.Router();
 
 router.get("/", getAllUsers);
 
 // LOGIN
-router.post("/login", loginUser);
+router.post("/login", validateLoginUser, loginUser);
 
 // REGISTER
-router.post("/", createUser);
+router.post("/", validateCreateUser, createUser);
 
 // UPDATE USER
 router.put("/:userId", verifyJWT, updatedUser);

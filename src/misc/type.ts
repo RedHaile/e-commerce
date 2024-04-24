@@ -37,8 +37,8 @@ export type DecodedUser = {
 };
 
 export type WithAuthRequest = Request & {
-  decodedUser?: DecodedUser
-}
+  decodedUser?: DecodedUser;
+};
 
 export type Order = {
   products: Product[];

@@ -20,7 +20,13 @@ describe("product controller test", () => {
   });
 
   test("should create new product when user is an admin and has valid token", async () => {
-    const response = await createUser("User", "1", "user1@gmail.com", "123", "admin");
+    const response = await createUser(
+      "User",
+      "1",
+      "user1@gmail.com",
+      "123",
+      "admin"
+    );
     const userData = await getToken(response.body.email, "123");
 
     const token = userData.body.token;
@@ -34,7 +40,13 @@ describe("product controller test", () => {
   });
 
   test("should not create new product when user is not an admin even has valid token", async () => {
-    const response = await createUser("User", "2", "user2@gmail.com", "123", "user");
+    const response = await createUser(
+      "User",
+      "2",
+      "user2@gmail.com",
+      "123",
+      "user"
+    );
     const userData = await getToken(response.body.email, "123");
 
     const token = userData.body.token;
@@ -48,7 +60,7 @@ describe("product controller test", () => {
   });
 
   test("should return all products", async () => {
-    const response = await request(app).get("/api/v1/products")
+    const response = await request(app).get("/api/v1/products");
     expect(response.status).toBe(200);
   });
 });

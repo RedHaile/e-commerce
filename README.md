@@ -1,11 +1,5 @@
 # E-commerce API
 
-## Members
-
-1. [Thuy Dang](https://github.com/Kimmi17)
-2. [Redeat Haile](https://github.com/RedHaile)
-3. [Khang Nguyen](https://github.com/Kudoo39)
-
 ## Description
 
 This repository contains code for a backend application built using Node.js, Express.js, Mongoose, and TypeScript. The application is designed to handle various CRUD operations related to products, users, orders, and categories. It utilizes MongoDB as its database.
@@ -17,8 +11,9 @@ Provide a brief overview of the project, including its purpose and main function
 2. [Features](#features)
 3. [Technologies Used](#technologies-used)
 4. [Project Structure](#project-structure)
-5. [Testing](#testing)
-6. [Deployment](#deployment)
+5. [Error Handling](#error-handling)
+6. [Testing](#testing)
+7. [Deployment](#deployment)
 
 ## Getting Started
 
@@ -26,9 +21,9 @@ Provide a brief overview of the project, including its purpose and main function
 
 Before you begin, ensure you have the following installed:
 
-Node.js (v12.x or later recommended)
-npm (Node Package Manager)
-yarn (package manager)
+- Node.js (v18.x or later recommended)
+- npm (Node Package Manager) or yarn
+
 
 ### Installation
 
@@ -80,7 +75,7 @@ The following endpoints are available in the application:
 - PUT /categories/:categoryId: Update a category.
 - DELETE /categories/:categoryId: Delete a category.
 
-### Error Handling
+## Error Handling
 
 Errors are handled centrally using custom error classes defined in the `errors/ApiErrors.ts` file. These errors are then caught and processed in the middleware `middlewares/apiErrorhandler.ts`.
 
@@ -98,6 +93,7 @@ Errors are handled centrally using custom error classes defined in the `errors/A
 - Node.js with Typescript
 - Express.js
 - Mongoose
+- Joi
 - nodemon
 - bcrypt
 - JWT (JSON Web Tokens)
@@ -139,10 +135,18 @@ src
  ┃ ┣ orders.ts
  ┃ ┣ products.ts
  ┃ ┗ users.ts
+ ┣ validations
+ ┃ ┗ userValidation.ts
  ┣ app.ts
  ┗ server.ts
  ```
+ ## .env.example 
 
+ - MONGODB_URL=mongodb+srv://username:password@your-mongodb-cluster-url
+ - PORT=''
+ - JWT_SECRET=''
+ - DEFAULT_PASSWORD=123
+ 
  ## Entity Relationship Diagram
 
  ![erd](./src/assets/erd.png)
