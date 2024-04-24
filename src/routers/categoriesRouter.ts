@@ -16,13 +16,10 @@ router.get("/", getAllCategories);
 
 router.get("/:categoryId", getCategoryById);
 
-// router.post("/", verifyJWT, adminCheck, createCategory);
-router.post("/", createCategory);
+router.post("/", verifyJWT, adminCheck, createCategory);
 
-// router.put("/:categoryId", verifyJWT, adminCheck, updateCategory);
-router.put("/:categoryId", updateCategory);
+router.put("/:categoryId", verifyJWT, adminCheck, updateCategory);
 
-// router.delete("/:categoryId", verifyJWT, adminCheck, deleteCategoryById);
-router.delete("/:categoryId", deleteCategoryById);
+router.delete("/:categoryId", verifyJWT, adminCheck, deleteCategoryById);
 
 export default router;
